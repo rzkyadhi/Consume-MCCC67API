@@ -1,0 +1,18 @@
+﻿@model ConsumeMCC67API.Models.Supplier
+
+<h1>Input Supplier</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div class="form-group">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-control" name="Name">
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div>
+                <input type="submit" class="btn btn-primary" value="Submit"/>
+            </div>
+        </form>
+    </div>
+</div>

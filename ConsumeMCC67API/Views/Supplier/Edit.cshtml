@@ -1,0 +1,18 @@
+﻿@model ConsumeMCC67API.Models.Supplier;
+@{
+}
+
+<h1>Edit Supplier</h1>
+
+<form asp-action="Edit">
+	<div class="mb-3">
+		<label asp-for="Id" class="form-label">Id</label>
+		<input asp-for="Id" class="form-control" readonly>
+	</div>
+	<div class="mb-3">
+		<label asp-for="Name" class="form-label">Name</label>
+		<input asp-for="Name" class="form-control">
+		<span asp-validation-for="Name" class="text-danger"></span>
+	</div>
+	<input type="submit" value="Edit" class="btn btn-warning" />
+</form>

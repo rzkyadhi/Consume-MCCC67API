@@ -1,0 +1,17 @@
+﻿@model ConsumeMCC67API.Models.Supplier
+@{
+}
+
+<h1>Delete Supplier</h1>
+
+<form asp-action="Delete">
+	<div class="mb-3">
+		<label asp-for="Id" class="form-label">Id</label>
+		<input asp-for="Id" class="form-control" readonly>
+	</div>
+	<div class="mb-3">
+		<label asp-for="Name" class="form-label">Name</label>
+		<input asp-for="Name" class="form-control" readonly>
+	</div>
+	<input type="submit" value="Delete" class="btn btn-danger"/>
+</form>

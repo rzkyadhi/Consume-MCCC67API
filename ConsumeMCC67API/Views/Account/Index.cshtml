@@ -1,0 +1,29 @@
+﻿@model ConsumeMCC67API.Models.Login
+
+<div class="container">
+	<div class="row">
+	  <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+		<div class="card border-0 shadow bg-white rounded-5 my-5">
+		  <div class="card-body p-4 p-sm-5">
+			<h5 class="card-title text-center mb-5 font-weight-normal fs-5 display-4">Sign In</h5>
+			<form asp-action="Index">
+				<label class="h5">Let's Get Started !</label>
+				<label class="lead">Sign in into your account</label>
+			  <div class="mb-3">
+				  <input type="email" asp-for="Email" class="form-control font-weight-bold" id="floatingInput" placeholder="Email Address" aria-describedby="emailHelp">
+				  <small class="text-muted" id="emailHelp">We'll never share your email with anyone else.</small>
+				</div>
+				<div class="mb-3">
+				  <input type="password" asp-for="Password" class="form-control font-weight-bold" id="floatingPassword" placeholder="Password" aria-describedby="passwordHelp">
+				  <small class="text-muted">Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.</small>
+				</div>
+			  <div class="d-grid gap-2 text-center">
+				<button class="btn btn-primary btn-login text-uppercase font-weight-bold shadow-none lead" type="submit">
+					Sign in
+				</button>
+			</form>
+		  </div>
+		</div>
+	  </div>
+	</div>
+  </div>

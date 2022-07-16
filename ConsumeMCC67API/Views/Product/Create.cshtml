@@ -1,0 +1,14 @@
+﻿@model ConsumeMCC67API.Models.Product
+<form asp-action="Create">
+	<div class="mb-3">
+		<label asp-for="Name" class="form-label">Name</label>
+		<input asp-for="Name" type="text" class="form-control">
+		<span asp-validation-for="Name" class="text-danger"></span>
+	</div>
+	<div class="mb-3">
+		<label asp-for=SupplierId>Supplier Id</label>
+		<select asp-for="SupplierId" class="form-control" asp-items=ViewBag.SupplierViewBag></select>
+		<span asp-validation-for="SupplierId" class="text-danger"></span>
+	</div>
+	<button type="submit" class="btn btn-primary">Submit</button>
+</form>
