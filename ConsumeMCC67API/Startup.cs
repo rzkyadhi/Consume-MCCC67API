@@ -1,3 +1,4 @@
+using ConsumeMCC67API.Repositories.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -30,6 +31,7 @@ namespace ConsumeMCC67API
             services.AddSession(options => {
                 options.IdleTimeout = TimeSpan.FromMinutes(1);
             });
+            services.AddScoped<SupplierRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
