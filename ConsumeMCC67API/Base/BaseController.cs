@@ -1,4 +1,5 @@
 ﻿using ConsumeMCC67API.Repositories.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConsumeMCC67API.Base
@@ -23,14 +24,14 @@ namespace ConsumeMCC67API.Base
         #endregion Get
 
         #region Create
-        public IActionResult Create()
+        public virtual IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(TModel model)
+        public virtual IActionResult Create(TModel model)
         {
             var post = repository.Post(model);
             string postString = post.ToString();
@@ -45,7 +46,7 @@ namespace ConsumeMCC67API.Base
 
         #region Edit
         [HttpGet]
-        public IActionResult Edit(int id)
+        public virtual IActionResult Edit(int id)
         {
             var result = repository.Get(id);
             return View(result);
@@ -53,7 +54,7 @@ namespace ConsumeMCC67API.Base
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(TModel model)
+        public virtual IActionResult Edit(TModel model)
         {
             var put = repository.Put(model);
             string putString = put.ToString();

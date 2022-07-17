@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using ConsumeMCC67API.Models;
 using System.Net.Http;
 using System;
@@ -8,49 +7,24 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Text;
+using ConsumeMCC67API.Base;
+using ConsumeMCC67API.Repositories.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ConsumeMCC67API.Controllers
 {
-	public class ProductController : Controller
+    [Authorize(Roles = "Staff")]
+	public class ProductController : BaseController<Product, ProductRepository>
 	{
         string BaseUrl = "https://localhost:44313/api/";
-        
-        #region Get
-        public async Task<ActionResult> Index()
+
+        public ProductController(ProductRepository repository) : base(repository)
         {
-            IEnumerable<Product> Product = null;
-
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(BaseUrl);
-                var responseTask = client.GetAsync("Product");
-                responseTask.Wait();
-
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = result.Content.ReadAsStringAsync().Result;
-                    var parsedObject = JObject.Parse(readTask);
-                    var dataOnly = parsedObject["data"].ToString();
-
-                    Product = JsonConvert.DeserializeObject<List<Product>>(dataOnly);
-                }
-                else
-                {
-                    Product = Enumerable.Empty<Product>();
-
-                    ModelState.AddModelError(string.Empty, "Server error. please contact administrator yg.");
-                }
-            }
-
-            return View(Product);
         }
-        #endregion Get
 
         #region Post
         [HttpGet]
-        public ActionResult Create()
+        public override IActionResult Create()
         {
             IEnumerable<Supplier> Supplier = null;
 
@@ -90,7 +64,7 @@ namespace ConsumeMCC67API.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Product product)
+        public override IActionResult Create(Product product)
         {
             if (ModelState.IsValid)
             {
@@ -115,7 +89,7 @@ namespace ConsumeMCC67API.Controllers
 
         #region Put
         [HttpGet]
-        public ActionResult Edit(int id)
+        public override IActionResult Edit(int id)
         {
             IEnumerable<Supplier> Supplier = null;
 
@@ -165,7 +139,7 @@ namespace ConsumeMCC67API.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Product product)
+        public override IActionResult Edit(Product product)
         {
             if (ModelState.IsValid)
             {
@@ -187,54 +161,5 @@ namespace ConsumeMCC67API.Controllers
             return View(product);
         }
         #endregion Put
-
-        #region Delete
-        [HttpGet]
-        public IActionResult Delete(int id)
-        {
-
-            Product product = null;
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(BaseUrl);
-                var responseTask = client.GetAsync("Product/" + id.ToString());
-                responseTask.Wait();
-
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = result.Content.ReadAsStringAsync().Result;
-                    var parsedObject = JObject.Parse(readTask);
-                    var dataOnly = parsedObject["data"].ToString();
-
-                    product = JsonConvert.DeserializeObject<Product>(dataOnly);
-                }
-            }
-            return View(product);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(Product product)
-        {
-            using (var client = new HttpClient())
-            {
-                var request = new HttpRequestMessage
-                {
-                    Method = HttpMethod.Delete,
-                    RequestUri = new Uri($"{BaseUrl}Product"),
-                    Content = new StringContent(JsonConvert.SerializeObject(product), Encoding.UTF8, "application/json")
-                };
-                var response = client.SendAsync(request);
-                response.Wait();
-                var result = response.Result;
-                if (result.IsSuccessStatusCode)
-                {
-                    return RedirectToAction("Index", "Product");
-                }
-            }
-            return RedirectToAction("Index", "Product");
-        }
-        #endregion Delete
     }
 }

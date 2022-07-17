@@ -1,15 +1,12 @@
 using ConsumeMCC67API.Repositories.Data;
+using ConsumeMCC67API.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace ConsumeMCC67API
 {
@@ -27,11 +24,13 @@ namespace ConsumeMCC67API
         {
             services.AddControllersWithViews();
             //Library For Showing Token On Views
-            /*services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();*/
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSession(options => {
                 options.IdleTimeout = TimeSpan.FromMinutes(1);
             });
             services.AddScoped<SupplierRepository>();
+            services.AddScoped<ProductRepository>();
+            services.AddTokenAuthentication(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,7 +53,19 @@ namespace ConsumeMCC67API
 
             app.UseSession();
 
+            app.Use(async (context, next) =>
+            {
+                var JWToken = context.Session.GetString("JWToken");
+                if (!string.IsNullOrEmpty(JWToken))
+                {
+                    context.Request.Headers.Add("Authorization", "Bearer " + JWToken);
+                }
+                await next();
+            });
+            app.UseAuthentication();
+
             app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {

@@ -4,7 +4,7 @@ namespace ConsumeMCC67API.Repositories.Data
 {
     public class SupplierRepository : GenericRepository<Supplier>
     {
-        public SupplierRepository(string request = "Supplier") : base(request)
+        public SupplierRepository(string request = "Supplier", string joinRequest = "None") : base(request, joinRequest)
         {
         }
     }

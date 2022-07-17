@@ -1,10 +1,12 @@
 ﻿using ConsumeMCC67API.Repositories.Interface;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace ConsumeMCC67API.Repositories
@@ -13,10 +15,17 @@ namespace ConsumeMCC67API.Repositories
         where TModel : class
     {
         string request;
+        string joinRequest;
+        IHttpContextAccessor _contextAccessor;
+        HttpClient httpClient;
         string baseUrl = "https://localhost:44313/api/";
-        public GenericRepository(string request)
+        public GenericRepository(string request, string joinRequest)
         {
             this.request = request;
+            this.joinRequest = joinRequest;
+            this._contextAccessor = new HttpContextAccessor();
+            this.httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _contextAccessor.HttpContext.Session.GetString("JWToken"));
         }
         #region Get
         public List<TModel> Get()
@@ -46,7 +55,7 @@ namespace ConsumeMCC67API.Repositories
         #endregion Get
 
         #region Get By An Id
-        public TModel Get(int id)
+        public virtual TModel Get(int id)
         {
             TModel model = null;
             using (var client = new HttpClient())
@@ -105,13 +114,13 @@ namespace ConsumeMCC67API.Repositories
         {
             using (var client = new HttpClient())
             {
-                var request = new HttpRequestMessage
+                var requestDelete = new HttpRequestMessage
                 {
                     Method = HttpMethod.Delete,
-                    RequestUri = new Uri($"{baseUrl}Supplier"),
+                    RequestUri = new Uri($"{baseUrl}{request}"),
                     Content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json")
                 };
-                var response = client.SendAsync(request);
+                var response = client.SendAsync(requestDelete);
                 response.Wait();
                 var result = response.Result.StatusCode;
                 return result;

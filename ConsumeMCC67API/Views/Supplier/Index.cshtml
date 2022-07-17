@@ -1,15 +1,15 @@
 ﻿@model IEnumerable<ConsumeMCC67API.Models.Supplier>
 
 @*Library for showing token on views*@
-@*@using Microsoft.AspNetCore.Http
-@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor*@
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 <h1>Supplier List</h1>
 
 @*Showing Token On Views*@
-@*<p>
+<p>
     @HttpContextAccessor.HttpContext.Session.GetString("Token")
-</p>*@
+</p>
 
 <table class="table table-bordered table-info table-hover">
 	<thead>

@@ -34,8 +34,17 @@ namespace ConsumeMCC67API.Controllers
                         var parsedObject = JObject.Parse(readTask);
                         var dataOnly = parsedObject["token"].ToString();
 
-                        HttpContext.Session.SetString("Token", dataOnly);
-                        return RedirectToAction("Index", "Supplier");
+                        HttpContext.Session.SetString("JWToken", dataOnly);
+                        string role = HttpContext.Session.GetString("JWToken");
+                        if (role == "Staff")
+                        {
+                            return RedirectToAction("Index", "Product");
+                        }
+                        if (role == "Manager")
+                        {
+                            return RedirectToAction("Index", "Supplier");
+                        }
+                        /*return RedirectToAction("Index", "Supplier");*/
                     }
                 }
             }
