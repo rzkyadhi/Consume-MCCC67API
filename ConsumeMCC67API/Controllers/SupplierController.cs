@@ -1,10 +1,12 @@
 ﻿using ConsumeMCC67API.Models;
 using ConsumeMCC67API.Repositories.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConsumeMCC67API.Controllers
 {
-    public class SupplierController : Controller
+	[Authorize(Roles = "Manager")]
+	public class SupplierController : Controller
     {
         private readonly SupplierRepository supplierRepository;
 
