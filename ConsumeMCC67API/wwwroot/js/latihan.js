@@ -28,7 +28,19 @@ for (let i = 0; i < favorite.length; i++) {
     favorite[i].style.backgroundColor = "Yellow";
 }*/
 
-const nodeList = document.querySelectorAll("section#b ul#a li.list");
+/*const nodeList = document.querySelectorAll("section#b ul#a li.list");
 for (let i = 0; i < nodeList.length - 1; i++) {
     nodeList[i].style.backgroundColor = "yellow";
+}*/
+
+var test = document.querySelector(".container .row .col:nth-child(2)");
+var testall = document.querySelectorAll(".container .row .col:nth-child(0)");
+var test2 = document.querySelectorAll(".container .row .col")[2];
+
+function changeText() {
+    /*var text = document.querySelector(".container .row .col:nth-child(2)");*/
+    /*var text = document.querySelectorAll(".container .row .col:nth-child(1)")[1];*/
+    var text2 = document.querySelectorAll(".container .row .col")[2];
+    text2.innerHTML = "Changed !";
+    return text2;
 }

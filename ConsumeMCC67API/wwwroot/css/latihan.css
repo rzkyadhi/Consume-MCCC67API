@@ -1,17 +1,17 @@
-﻿*{
-    border: 2px solid #dddd;
-    padding: 15px;
-    margin: 15px;
-}
+﻿    /**{
+        border: 2px solid #dddd;
+        padding: 15px;
+        margin: 15px;
+    }
 
-html{
-    margin: 0;
-}
+    html{
+        margin: 0;
+    }
 
-body{
-    max-width: 700px;
-    margin: 20px auto;
-}
+    body{
+        max-width: 700px;
+        margin: 20px auto;
+    }*/
 
 /*.p1, .p2, .p3{
     background-color: yellow;
@@ -33,9 +33,9 @@ body{
     background-color: brown;
 }*/
 
-section#b ul#a .list:last-child{
+/*section#b ul#a .list:nth-child(2){
     background: brown;
-}
+}*/
 
 /*p:last-child {
     background: #ff0000;
