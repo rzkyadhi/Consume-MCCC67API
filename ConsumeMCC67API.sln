@@ -5,6 +5,8 @@ VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsumeMCC67API", "ConsumeMCC67API\ConsumeMCC67API.csproj", "{0C04BAE0-7597-47BB-A03C-96D688DF62A5}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "..\API\API\API.csproj", "{BC532FC8-8F10-4E76-9BFE-599DFE4E2E41}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{0C04BAE0-7597-47BB-A03C-96D688DF62A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C04BAE0-7597-47BB-A03C-96D688DF62A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C04BAE0-7597-47BB-A03C-96D688DF62A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC532FC8-8F10-4E76-9BFE-599DFE4E2E41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC532FC8-8F10-4E76-9BFE-599DFE4E2E41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC532FC8-8F10-4E76-9BFE-599DFE4E2E41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC532FC8-8F10-4E76-9BFE-599DFE4E2E41}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
