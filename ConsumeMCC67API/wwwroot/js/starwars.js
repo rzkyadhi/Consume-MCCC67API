@@ -2,6 +2,7 @@
 	url: "https://swapi.dev/api/people/"
 }).done((result) => {
 	let text = "";
+	let modalBody = "";
 	$.each(result.results, function (key, val) {
 		text +=
 			`<tr>
