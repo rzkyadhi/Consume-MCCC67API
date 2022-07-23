@@ -23,13 +23,16 @@ namespace ConsumeMCC67API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            //Library For Showing Token On Views
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSession(options => {
-                options.IdleTimeout = TimeSpan.FromMinutes(1);
+                options.IdleTimeout = TimeSpan.FromMinutes(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
             });
             services.AddScoped<SupplierRepository>();
             services.AddScoped<ProductRepository>();
+            
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddHttpContextAccessor();
             services.AddTokenAuthentication(Configuration);
         }
 
@@ -46,13 +49,17 @@ namespace ConsumeMCC67API
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseStatusCodePages(async context =>
+            {
+                var request = context.HttpContext.Request;
+                var response = context.HttpContext.Response;
+            });
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
 
             app.UseSession();
-
             app.Use(async (context, next) =>
             {
                 var JWToken = context.Session.GetString("JWToken");
@@ -62,9 +69,12 @@ namespace ConsumeMCC67API
                 }
                 await next();
             });
+
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            
 
 
             app.UseEndpoints(endpoints =>

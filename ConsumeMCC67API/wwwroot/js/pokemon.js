@@ -24,7 +24,7 @@ function detailPoke(pokeUrl) {
 	$.ajax({
 		url: pokeUrl
 	}).done((result) => {
-		console.log(result.abilities[0].ability.name);
+		// console.log(result.abilities[0].ability.url);
 		types += `<div class="text-center">`
 		// Looping for Pokemon Types
 		for (let i = 0; i < result.types.length; i++) {
@@ -172,13 +172,18 @@ function detailPoke(pokeUrl) {
 			if (result.abilities[i].is_hidden == false) {
 				stats +=
 					`
-				<li class="list-group-item">${result.abilities[i].ability.name}</li>  
+				<li class="list-group-item">${result.abilities[i].ability.name}</li>
+				<ul class="nav nav-abilities nav-pills mb-3 align-self-center" id="pills-tab" role="tablist">
+					<li class="nav-item">
+						<a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true" onclick="specialEffect('${result.abilities[i].ability.url}')">Show Effect</a>
+					</li>
+				</ul>
 			`
 			}
 		}
 
 		stats +=
-		`
+			`
 						</ul>
 					</div>
 				</div>
@@ -192,6 +197,11 @@ function detailPoke(pokeUrl) {
 							<p class="font-weight-bold text-uppercase text-center">Hidden Abilities</p>
 							<ul class="list-group">
 								<li class="list-group-item">${result.abilities[i].ability.name}</li> 
+								<ul class="nav nav-hiddenabilities nav-pills mb-3 align-self-center" id="pills-tab" role="tablist">
+									<li class="nav-item">
+										<a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true" onclick="specialEffectHidden('${result.abilities[i].ability.url}')">Show Effect</a>
+									</li>
+								</ul>
 							</ul>
 						</div>
 					</div>	
@@ -216,6 +226,52 @@ function detailPoke(pokeUrl) {
 		$(".modal-title").html(result.name);
 		$(".modal-body").html(modalBody);
 		/*if (result.types[0].type.name == "grass") $(".modal-body").css("background-color", "#28a745")*/
-		
+
+	})
+}
+
+
+function specialEffect(specialEffectUrl) {
+	$.ajax({
+		url: specialEffectUrl
+	}).done((result) => {
+		let specialTab = "";
+		$.each(result.effect_entries, function (key, val) {
+			// console.log(result.effect_entries[0].effect);
+			if (val.language.name == "en") {
+				specialTab +=
+					`
+				<div class="tab-content text-center" id="pills-tabContent">
+  					<div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">${val.effect}</div>
+  					<div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">...</div>
+  					<div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
+				</div>`;
+			}
+
+		});
+		// console.log(result.results);
+		$(".nav-abilities").html(specialTab);
+	})
+}
+
+function specialEffectHidden(specialEffectUrl) {
+	$.ajax({
+		url: specialEffectUrl
+	}).done((result) => {
+		let specialTab = "";
+		$.each(result.effect_entries, function (key, val) {
+			if (val.language.name == "en") {
+				specialTab +=
+					`
+				<div class="tab-content text-center" id="pills-tabContent">
+  					<div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">${val.effect}</div>
+  					<div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">...</div>
+  					<div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
+				</div>`;
+			}
+
+		});
+		// console.log(result.results);
+		$(".nav-hiddenabilities").html(specialTab);
 	})
 }

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ConsumeMCC67API.Controllers
 {
-	[Authorize(Roles = "Manager")]
+	/*[Authorize(Roles = "Manager")]*/
 	public class SupplierController : Controller
     {
         private readonly SupplierRepository supplierRepository;
