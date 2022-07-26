@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ConsumeMCC67API.Models.Product>
+﻿@*@model IEnumerable<ConsumeMCC67API.Models.Product>*@
 
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -6,8 +6,11 @@
 @{
 }
 
-<table class="table table-bordered">
-    <thead>
+@using Microsoft.AspNetCore.Http
+
+
+<table class="table table-bordered table-hover" id="tableProduct">
+    <thead class="thead-dark text-center">
         <tr>
             <th scope="col">Id</th>
             <th scope="col">Name</th>
@@ -16,7 +19,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @*@foreach (var item in Model)
         {
             <tr>
                 <td>@Html.DisplayFor(model => item.Id)</td>
@@ -27,8 +30,52 @@
                     <a class="btn btn-danger" asp-route-id="@item.Id" asp-action="Delete">Delete</a>
                 </td>
             </tr>
-        }
+        }*@
     </tbody>
 </table>
 
 <a class="btn btn-primary" asp-action="Create" asp-controller="Product">Add Product</a>
+
+@*@section Scripts{
+    <script>
+        $(document).ready(function () {
+    $('#tableProduct').DataTable({
+        "ajax": {
+            "url": "https://localhost:44313/api/product",
+            "dataType": "json",
+            "dataSrc": "data",
+            "headers": {
+                "Authorization": "Bearer @Context.Session.GetString("JWToken")"
+            },
+        },
+        "columns": [{
+                "data": "id",
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }
+            },
+            {
+                "data": "name"
+            },
+            {
+                "data": "supplier.name"
+            },
+            {
+                // data: null,
+                render: function (data, type, row) {
+
+                    return `
+                    <a href="https://localhost:44317/product/edit/${row['id']}" class="btn btn-warning">
+                        Edit
+                    </a>
+                    <a type="button" href="https://localhost:44317/product/delete/${row['id']}" class="btn btn-danger">
+                        Delete
+                    </a>`
+                }
+            }
+        ]
+    });
+});
+    </script>
+    
+}*@
