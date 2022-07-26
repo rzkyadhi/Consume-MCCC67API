@@ -1,0 +1,54 @@
+﻿@{
+Layout = "_LayoutDashboard";
+}
+<div>
+    <canvas id="myChart" height="300px"></canvas>
+</div>
+@section Scripts{
+<script>
+    const labels = [
+        'Red',
+        'Blue',
+        'Yellow'
+    ];
+
+    const data = {
+        labels: labels,
+        datasets: [{
+            label: 'My First dataset',
+            data: [300, 50, 100],
+            backgroundColor: [
+                'rgb(255, 99, 132)',
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)'
+            ],
+            hoverOffset: 4,
+        }]
+    };
+
+    const plugin = {
+        id: 'custom_canvas_background_color',
+        beforeDraw: (chart) => {
+            const {
+                ctx
+            } = chart;
+            ctx.save();
+            ctx.globalCompositeOperation = 'destination-over';
+            ctx.fillStyle = 'lightGreen';
+            ctx.fillRect(0, 0, chart.width, chart.height);
+            ctx.restore();
+        }
+    };
+
+    const config = {
+        type: 'doughnut',
+        data: data,
+        plugins: [plugin],
+    };
+
+    const myChart = new Chart(
+        document.getElementById('myChart'),
+        config
+    );
+</script>
+}
