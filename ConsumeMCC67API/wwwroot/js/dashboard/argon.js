@@ -279,7 +279,7 @@ var Charts = (function() {
 			}
 		}
 
-		// yAxes
+		/*// yAxes
 		Chart.scaleService.updateScaleDefaults('linear', {
 			gridLines: {
 				borderDash: [2],
@@ -315,13 +315,13 @@ var Charts = (function() {
 				padding: 20
 			},
 			maxBarThickness: 10
-		});
+		});*/
 
 		return options;
 
 	}
 
-	// Parse global options
+	/*// Parse global options
 	function parseOptions(parent, options) {
 		for (var item in options) {
 			if (typeof options[item] !== 'object') {
@@ -330,7 +330,7 @@ var Charts = (function() {
 				parseOptions(parent[item], options[item]);
 			}
 		}
-	}
+	}*/
 
 	// Push options
 	function pushOptions(parent, options) {
@@ -431,10 +431,10 @@ var Charts = (function() {
 
 	// Events
 
-	// Parse global options
+	/*// Parse global options
 	if (window.Chart) {
 		parseOptions(Chart, chartOptions());
-	}
+	}*/
 
 	// Toggle options
 	$toggle.on({
