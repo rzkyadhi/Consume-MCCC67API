@@ -85,12 +85,13 @@
                 render: function (data, type, row) {
 
                     return `
-                                <a href="https://localhost:44317/product/edit/${row['id']}" class="btn btn-warning">
+                                <a type="button" onclick="editProduct(${row['id']})" data-toggle="modal" data-target="#editProduct" class="btn btn-warning text-light">
                                     Edit
                                 </a>
-                                <a type="button" onclick="getProduct(${row['id']})" data-toggle="modal" data-target="#deleteProduct" class="btn btn-danger text-light">
+                                <a type="button" onclick="deleteProduct(${row['id']})" class="btn btn-danger text-light">
                                     Delete
                                 </a>`
+
                 }
             }
         ]
@@ -154,41 +155,55 @@ var validation = Array.prototype.filter.call(forms, function (form) {
     }, false);
 });
 
-function getProduct(id) {
+// Delete Section
+function deleteProduct(id) {
     $.ajax({
         url: `https://localhost:44313/api/product/${id}`,
         type: 'get'
     }).done((result) => {
-        let deleteModalBody =
-            `
-        <div class="form-row">
-            <div class="col-md-4 mb-3">
-                    <label for="productId">Product Id</label>
-                    <input name="productId" type="number" class="form-control"
-                        id="productId" value=${result.data.id} readonly required>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
-                </div>
-            <div class="col-md-4 mb-3">
-                <label for="productDeleteName">Product Name</label>
-                <input id="productDeleteName" type="text" class="form-control"
-                         value="${result.data['name']}" readonly required>
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
-            </div>
-            <div class="col-md-4 mb-3">
-                <label for="supplierId">Supplier Name</label>
-                <input name="supplierId" type="text" class="form-control"
-                    id="supplierId" value=${result.data.supplierId} readonly required>
-                <div class="invalid-feedback">
-                    Please select a valid supplier.
-                </div>
-            </div>
-        </div>
-        `;
-        $("#modalDelete").html(deleteModalBody);
+        let objDelete = {};
+        objDelete.id = result.data.id;
+        objDelete.name = result.data.name
+        objDelete.supplierId = result.data.supplierId
+        console.log(objDelete);
+        swal({
+            title: "Are you sure?",
+            text: `You want to delete product id : ${objDelete.id} product name : ${objDelete.name} with supplier ${objDelete.supplierId}`,
+            buttons: {
+                cancel: true,
+                confirm: true,
+            },
+            closeOnConfirm: false
+        }).then(function (isConfirm) {
+            if (isConfirm === true) {
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    url: "https://localhost:44313/api/product",
+                    type: "delete",
+                    dataType: "json",
+                    data: JSON.stringify(objDelete),
+                    success: function (data) {
+                        $("#tableProduct").DataTable().ajax.reload();
+                        swal(
+                            "Success!",
+                            `${objDelete.name} has been deleted !`,
+                            "success"
+                        )
+                    },
+                    failure: function (data) {
+                        swal(
+                            "Internal Error",
+                            "Oops, Product was not saved.",
+                            "error"
+                        )
+                    }
+                });
+            }
+        })
+        console.log('Form submitted');
     })
 
     // Delete Section
@@ -203,10 +218,64 @@ function getProduct(id) {
             }
             form.classList.add('was-validated');
             event.preventDefault();
+
+
+        }, false);
+    });
+}
+
+// Edit Section
+function editProduct(id) {
+    $.ajax({
+        url: `https://localhost:44313/api/product/${id}`,
+        type: 'get'
+    }).done((result) => {
+        let editModalBody =
+            `
+        <div class="form-row">
+            <div class="col-md-4 mb-3">
+                    <label for="productId">Product Id</label>
+                    <input name="productId" type="number" class="form-control"
+                        id="productId" value=${result.data.id} readonly required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+            <div class="col-md-4 mb-3">
+                <label for="productDeleteName">Product Name</label>
+                <input id="productDeleteName" type="text" class="form-control"
+                         value="${result.data['name']}" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="supplierId">Supplier Name</label>
+                <input name="supplierId" type="text" class="form-control"
+                    id="supplierId" value=${result.data.supplierId} required>
+                <div class="invalid-feedback">
+                    Please select a valid supplier.
+                </div>
+            </div>
+        </div>
+        `;
+        $("#modalEdit").html(editModalBody);
+    })
+
+    // Edit Section
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var formsEdit = document.getElementsByClassName('edit-validation');
+    // Loop over them and prevent submission
+    var validationEdit = Array.prototype.filter.call(formsEdit, function (form) {
+        form.addEventListener('submit', function (event) {
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+            event.preventDefault();
             let objDelete = {};
-            
             objDelete.id = parseInt($("#productId").val());
-            
             objDelete.name = $("#productDeleteName").val();
             objDelete.supplierId = parseInt($("#supplierId").val());
             console.log(objDelete);
@@ -226,7 +295,7 @@ function getProduct(id) {
                             'Content-Type': 'application/json'
                         },
                         url: "https://localhost:44313/api/product",
-                        type: "delete",
+                        type: "put",
                         dataType: "json",
                         data: JSON.stringify(objDelete),
                         success: function (data) {
@@ -234,7 +303,7 @@ function getProduct(id) {
                             $("#deleteProduct").modal('hide'),
                                 swal(
                                     "Success!",
-                                    "Product has been deleted!",
+                                    "Product has been edited!",
                                     "success"
                                 )
                         },
