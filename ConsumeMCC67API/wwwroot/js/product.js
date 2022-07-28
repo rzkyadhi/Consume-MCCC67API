@@ -98,62 +98,66 @@
     });
 });
 
-// Fetch all the forms we want to apply custom Bootstrap validation styles to
-var forms = document.getElementsByClassName('needs-validation');
-// Loop over them and prevent submission
-var validation = Array.prototype.filter.call(forms, function (form) {
-    form.addEventListener('submit', function (event) {
-        if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-        form.classList.add('was-validated');
-        event.preventDefault();
-        let obj = {};
-        obj.name = $("#productName").val();
-        obj.supplierId = parseInt($("#supplierName").val());
-        swal({
-            title: "Are you sure?",
-            text: `You want to add product : ${obj.name} with supplier ${obj.supplierId}`,
-            buttons: {
-                cancel: true,
-                confirm: true,
-            },
-            closeOnConfirm: false
-        }).then(function (isConfirm) {
-            if (isConfirm === true) {
-                $.ajax({
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    url: "https://localhost:44313/api/product",
-                    type: "post",
-                    dataType: "json",
-                    data: JSON.stringify(obj),
-                    success: function (data) {
-                        $("#tableProduct").DataTable().ajax.reload();
-                        $("#addProduct").modal('hide'),
-                            swal(
-                                "Success!",
-                                "Product has been saved!",
-                                "success"
-                            )
-                    },
-                    failure: function (data) {
-                        swal(
-                            "Internal Error",
-                            "Oops, Product was not saved.",
-                            "error"
-                        )
-                    }
-                });
+// Add Sections
+function addProduct() {
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function (form) {
+        form.addEventListener('submit', function (event) {
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
             }
-        })
-        console.log(obj);
-        console.log('Form submitted');
-    }, false);
-});
+            form.classList.add('was-validated');
+            event.preventDefault();
+            let obj = {};
+            obj.name = $("#productName").val();
+            obj.supplierId = parseInt($("#supplierName").val());
+            swal({
+                title: "Are you sure?",
+                text: `You want to add product : ${obj.name} with supplier ${obj.supplierId}`,
+                buttons: {
+                    cancel: true,
+                    confirm: true,
+                },
+                closeOnConfirm: false
+            }).then(function (isConfirm) {
+                if (isConfirm === true) {
+                    $.ajax({
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        url: "https://localhost:44313/api/product",
+                        type: "post",
+                        dataType: "json",
+                        data: JSON.stringify(obj),
+                        success: function (data) {
+                            $("#tableProduct").DataTable().ajax.reload();
+                            $("#addProduct").modal('hide'),
+                                swal(
+                                    "Success!",
+                                    "Product has been saved!",
+                                    "success"
+                                )
+                        },
+                        failure: function (data) {
+                            swal(
+                                "Internal Error",
+                                "Oops, Product was not saved.",
+                                "error"
+                            )
+                        }
+                    });
+                }
+            })
+            console.log(obj);
+            console.log('Form submitted');
+        }, false);
+    });
+}
+
 
 // Delete Section
 function deleteProduct(id) {
@@ -226,10 +230,14 @@ function deleteProduct(id) {
 
 // Edit Section
 function editProduct(id) {
+    let idSupplier = 0;
+    let option = "";
     $.ajax({
         url: `https://localhost:44313/api/product/${id}`,
         type: 'get'
     }).done((result) => {
+        let supplier = result.data;
+        idSupplier = supplier.supplierId;
         let editModalBody =
             `
         <div class="form-row">
@@ -251,8 +259,9 @@ function editProduct(id) {
             </div>
             <div class="col-md-4 mb-3">
                 <label for="supplierId">Supplier Name</label>
-                <input name="supplierId" type="text" class="form-control"
-                    id="supplierId" value=${result.data.supplierId} required>
+                <select class="form-control" id="supplierId">
+                
+                </select>
                 <div class="invalid-feedback">
                     Please select a valid supplier.
                 </div>
@@ -260,6 +269,32 @@ function editProduct(id) {
         </div>
         `;
         $("#modalEdit").html(editModalBody);
+        $.ajax({
+            url: `https://localhost:44313/api/supplier`,
+            type: 'get'
+        }).done((result) => {
+            option +=
+                `
+            <option value="">Choose Supplier</option>
+            `
+            $.each(result.data, (key, val) => {
+                option +=
+                    `
+                <option value=${val.id}>${val.name}</option>
+                `
+            })
+            // console.log(option);
+            $("#supplierId").html(option);
+
+            for (let optionSupplier of document.getElementById("supplierId").options) {
+                console.log(optionSupplier);
+                console.log(idSupplier);
+                if (optionSupplier.value == idSupplier) {
+                    optionSupplier.selected = true;
+                    return;
+                }
+            }
+        })
     })
 
     // Edit Section
@@ -274,14 +309,14 @@ function editProduct(id) {
             }
             form.classList.add('was-validated');
             event.preventDefault();
-            let objDelete = {};
-            objDelete.id = parseInt($("#productId").val());
-            objDelete.name = $("#productDeleteName").val();
-            objDelete.supplierId = parseInt($("#supplierId").val());
-            console.log(objDelete);
+            let objEdit = {};
+            objEdit.id = parseInt($("#productId").val());
+            objEdit.name = $("#productDeleteName").val();
+            objEdit.supplierId = parseInt($("#supplierId").val());
+            console.log(objEdit);
             swal({
                 title: "Are you sure?",
-                text: `You want to delete product id : ${objDelete.id} product name : ${objDelete.name} with supplier ${objDelete.supplierId}`,
+                text: `You will edit product id : ${objEdit.id} product name : ${objEdit.name} with supplier ${objEdit.supplierId}`,
                 buttons: {
                     cancel: true,
                     confirm: true,
@@ -297,13 +332,13 @@ function editProduct(id) {
                         url: "https://localhost:44313/api/product",
                         type: "put",
                         dataType: "json",
-                        data: JSON.stringify(objDelete),
+                        data: JSON.stringify(objEdit),
                         success: function (data) {
                             $("#tableProduct").DataTable().ajax.reload();
-                            $("#deleteProduct").modal('hide'),
+                            $("#editProduct").modal('hide'),
                                 swal(
                                     "Success!",
-                                    "Product has been edited!",
+                                    `${objEdit.name} has been edited`,
                                     "success"
                                 )
                         },
