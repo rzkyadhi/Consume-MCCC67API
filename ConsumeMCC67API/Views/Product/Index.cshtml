@@ -18,7 +18,9 @@
     </table>
 
 
-    <a class="btn btn-primary text-light" data-toggle="modal" data-target="#addProduct">Add Product</a>
+    <a type="button" data-toggle="modal" data-target="#addProduct" class="btn btn-primary text-light">
+        Add Product
+    </a>
 
     <!-- ModalCreate -->
     <div class="modal fade" id="addProduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -56,6 +58,28 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button id="submitBtn" class="btn btn-primary" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ModalDelete -->
+    <div class="modal fade" id="deleteProduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete Product</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form class="delete-validation" novalidate>
+                    <div class="modal-body" id="modalDelete">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button id="submitBtn" class="btn btn-danger" type="submit">Delete</button>
                     </div>
                 </form>
             </div>
