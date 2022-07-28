@@ -1,14 +1,26 @@
 ﻿@model ConsumeMCC67API.Models.Product
-<form asp-action="Create">
-	<div class="mb-3">
-		<label asp-for="Name" class="form-label">Name</label>
-		<input asp-for="Name" type="text" class="form-control">
-		<span asp-validation-for="Name" class="text-danger"></span>
+@{
+Layout = "_LayoutCreate";
+}
+<form class="needs-validation" novalidate>
+	<div class="form-row">
+		<div class="col-md-6 mb-3">
+			<label for="productName">Product Name</label>
+			<input asp-for="Name" name="productName" type="text" class="form-control" id="productName" required>
+			<div class="valid-feedback">
+				Looks good!
+			</div>
+		</div>
+		<div class="col-md-6 mb-3">
+			<label for="supplierName">Supplier Name</label>
+			<select asp-for="SupplierId" name="supplierName"  asp-items=ViewBag.SupplierViewBag class="custom-select" id="supplierName" required>
+				<option selected disabled value="">Choose...</option>
+			</select>
+			<div class="invalid-feedback">
+				Please select a valid supplier.
+			</div>
+		</div>
 	</div>
-	<div class="mb-3">
-		<label asp-for=SupplierId>Supplier Id</label>
-		<select asp-for="SupplierId" class="form-control" asp-items=ViewBag.SupplierViewBag></select>
-		<span asp-validation-for="SupplierId" class="text-danger"></span>
-	</div>
-	<button type="submit" class="btn btn-primary">Submit</button>
+	<button id="submitBtn"  class="btn btn-primary" type="submit">Submit</button>
 </form>
+
