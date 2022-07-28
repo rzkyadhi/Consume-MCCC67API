@@ -10,18 +10,16 @@
             [10, 25, 50, -1],
             ['10 rows', '25 rows', '50 rows', 'Show all']
         ],
-        buttons: [
-            {
+        buttons: [{
                 extend: 'pageLength',
                 className: 'btn btn-primary dropdown-toggle rounded'
             },
             'spacer',
             {
-                extend: 'collection',   
+                extend: 'collection',
                 text: 'Export As',
                 className: 'btn btn-primary rounded',
-                buttons: [
-                    {
+                buttons: [{
                         extend: 'copy',
                     },
                     {
@@ -99,24 +97,30 @@
     });
 });
 
-// Modal Function for Add Product
-$(document).ready(function () {
-    'use strict';
-    window.addEventListener('load', function () {
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        var forms = document.getElementsByClassName('needs-validation');
-        // Loop over them and prevent submission
-        var validation = Array.prototype.filter.call(forms, function (form) {
-            form.addEventListener('submit', function (event) {
-                if (form.checkValidity() === false) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-                form.classList.add('was-validated');
-                event.preventDefault();
-                let obj = {};
-                obj.name = $("#productName").val();
-                obj.supplierId = parseInt($("#supplierName").val());
+// Fetch all the forms we want to apply custom Bootstrap validation styles to
+var forms = document.getElementsByClassName('needs-validation');
+// Loop over them and prevent submission
+var validation = Array.prototype.filter.call(forms, function (form) {
+    form.addEventListener('submit', function (event) {
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+        event.preventDefault();
+        let obj = {};
+        obj.name = $("#productName").val();
+        obj.supplierId = parseInt($("#supplierName").val());
+        swal({
+            title: "Are you sure?",
+            text: `You want to add product : ${obj.name} with supplier ${obj.supplierId}`,
+            buttons: {
+                cancel: true,
+                confirm: true,
+            },
+            closeOnConfirm: false
+        }).then(function (isConfirm) {
+            if (isConfirm === true) {
                 $.ajax({
                     headers: {
                         'Accept': 'application/json',
@@ -128,13 +132,24 @@ $(document).ready(function () {
                     data: JSON.stringify(obj),
                     success: function (data) {
                         $("#tableProduct").DataTable().ajax.reload();
-                        $("#addProduct").modal('hide');
+                        $("#addProduct").modal('hide'),
+                            swal(
+                                "Success!",
+                                "Product has been saved!",
+                                "success"
+                            )
+                    },
+                    failure: function (data) {
+                        swal(
+                        "Internal Error",
+                        "Oops, Product was not saved.",
+                        "error"
+                        )
                     }
                 });
-                console.log(obj);
-                console.log('Form submitted');
-            }, false);
-        });
+            }
+        })
+        console.log(obj);
+        console.log('Form submitted');
     }, false);
 });
-
