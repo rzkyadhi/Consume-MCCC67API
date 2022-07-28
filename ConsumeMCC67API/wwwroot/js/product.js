@@ -137,7 +137,7 @@ function addProduct() {
                                 $("#addProduct").modal('hide'),
                                     swal(
                                         "Success!",
-                                        "Product has been saved!",
+                                        `${obj.name} has been saved`,
                                         "success"
                                     )
                             },
