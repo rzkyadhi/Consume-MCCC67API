@@ -109,50 +109,50 @@ function addProduct() {
                 event.preventDefault();
                 event.stopPropagation();
             } else {
-            event.preventDefault();
-            let obj = {};
-            obj.name = $("#productName").val();
-            obj.supplierId = parseInt($("#supplierName").val());
-            swal({
-                title: "Are you sure?",
-                text: `You want to add product : ${obj.name} with supplier ${obj.supplierId}`,
-                buttons: {
-                    cancel: true,
-                    confirm: true,
-                },
-                closeOnConfirm: false
-            }).then(function (isConfirm) {
-                if (isConfirm === true) {
-                    $.ajax({
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        },
-                        url: "https://localhost:44313/api/product",
-                        type: "post",
-                        dataType: "json",
-                        data: JSON.stringify(obj),
-                        success: function (data) {
-                            $("#tableProduct").DataTable().ajax.reload();
-                            $("#addProduct").modal('hide'),
+                event.preventDefault();
+                let obj = {};
+                obj.name = $("#productName").val();
+                obj.supplierId = parseInt($("#supplierName").val());
+                swal({
+                    title: "Are you sure?",
+                    text: `You want to add product : ${obj.name} with supplier ${obj.supplierId}`,
+                    buttons: {
+                        cancel: true,
+                        confirm: true,
+                    },
+                    closeOnConfirm: false
+                }).then(function (isConfirm) {
+                    if (isConfirm === true) {
+                        $.ajax({
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            url: "https://localhost:44313/api/product",
+                            type: "post",
+                            dataType: "json",
+                            data: JSON.stringify(obj),
+                            success: function (data) {
+                                $("#tableProduct").DataTable().ajax.reload();
+                                $("#addProduct").modal('hide'),
+                                    swal(
+                                        "Success!",
+                                        "Product has been saved!",
+                                        "success"
+                                    )
+                            },
+                            failure: function (data) {
                                 swal(
-                                    "Success!",
-                                    "Product has been saved!",
-                                    "success"
+                                    "Internal Error",
+                                    "Oops, Product was not saved.",
+                                    "error"
                                 )
-                        },
-                        failure: function (data) {
-                            swal(
-                                "Internal Error",
-                                "Oops, Product was not saved.",
-                                "error"
-                            )
-                        }
-                    });
-                }
-            })
-            console.log(obj);
-            console.log('Form submitted');
+                            }
+                        });
+                    }
+                })
+                console.log(obj);
+                console.log('Form submitted');
             }
             form.classList.add('was-validated');
         }, false);
@@ -307,52 +307,54 @@ function editProduct(id) {
             if (form.checkValidity() === false) {
                 event.preventDefault();
                 event.stopPropagation();
+            } else {
+                event.preventDefault();
+                let objEdit = {};
+                objEdit.id = parseInt($("#productId").val());
+                objEdit.name = $("#productDeleteName").val();
+                objEdit.supplierId = parseInt($("#supplierId").val());
+                console.log(objEdit);
+                swal({
+                    title: "Are you sure?",
+                    text: `You will edit product id : ${objEdit.id} product name : ${objEdit.name} with supplier ${objEdit.supplierId}`,
+                    buttons: {
+                        cancel: true,
+                        confirm: true,
+                    },
+                    closeOnConfirm: false
+                }).then(function (isConfirm) {
+                    if (isConfirm === true) {
+                        $.ajax({
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            url: "https://localhost:44313/api/product",
+                            type: "put",
+                            dataType: "json",
+                            data: JSON.stringify(objEdit),
+                            success: function (data) {
+                                $("#tableProduct").DataTable().ajax.reload();
+                                $("#editProduct").modal('hide'),
+                                    swal(
+                                        "Success!",
+                                        `${objEdit.name} has been edited`,
+                                        "success"
+                                    )
+                            },
+                            failure: function (data) {
+                                swal(
+                                    "Internal Error",
+                                    "Oops, Product was not saved.",
+                                    "error"
+                                )
+                            }
+                        });
+                    }
+                })
             }
             form.classList.add('was-validated');
-            event.preventDefault();
-            let objEdit = {};
-            objEdit.id = parseInt($("#productId").val());
-            objEdit.name = $("#productDeleteName").val();
-            objEdit.supplierId = parseInt($("#supplierId").val());
-            console.log(objEdit);
-            swal({
-                title: "Are you sure?",
-                text: `You will edit product id : ${objEdit.id} product name : ${objEdit.name} with supplier ${objEdit.supplierId}`,
-                buttons: {
-                    cancel: true,
-                    confirm: true,
-                },
-                closeOnConfirm: false
-            }).then(function (isConfirm) {
-                if (isConfirm === true) {
-                    $.ajax({
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        },
-                        url: "https://localhost:44313/api/product",
-                        type: "put",
-                        dataType: "json",
-                        data: JSON.stringify(objEdit),
-                        success: function (data) {
-                            $("#tableProduct").DataTable().ajax.reload();
-                            $("#editProduct").modal('hide'),
-                                swal(
-                                    "Success!",
-                                    `${objEdit.name} has been edited`,
-                                    "success"
-                                )
-                        },
-                        failure: function (data) {
-                            swal(
-                                "Internal Error",
-                                "Oops, Product was not saved.",
-                                "error"
-                            )
-                        }
-                    });
-                }
-            })
+
             console.log('Form submitted');
         }, false);
     });
