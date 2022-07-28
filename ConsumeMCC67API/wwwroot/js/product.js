@@ -108,8 +108,7 @@ function addProduct() {
             if (form.checkValidity() === false) {
                 event.preventDefault();
                 event.stopPropagation();
-            }
-            form.classList.add('was-validated');
+            } else {
             event.preventDefault();
             let obj = {};
             obj.name = $("#productName").val();
@@ -154,6 +153,8 @@ function addProduct() {
             })
             console.log(obj);
             console.log('Form submitted');
+            }
+            form.classList.add('was-validated');
         }, false);
     });
 }
