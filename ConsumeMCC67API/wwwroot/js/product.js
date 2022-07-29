@@ -98,65 +98,108 @@
     });
 });
 
-// Add Sections
+// Add Section
 function addProduct() {
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    var forms = document.getElementsByClassName('needs-validation');
-    // Loop over them and prevent submission
-    var validation = Array.prototype.filter.call(forms, function (form) {
-        form.addEventListener('submit', function (event) {
-            if (form.checkValidity() === false) {
-                event.preventDefault();
-                event.stopPropagation();
-            } else {
-                event.preventDefault();
-                let obj = {};
-                obj.name = $("#productName").val();
-                obj.supplierId = parseInt($("#supplierName").val());
-                swal({
-                    title: "Are you sure?",
-                    text: `You want to add product : ${obj.name} with supplier ${obj.supplierId}`,
-                    buttons: {
-                        cancel: true,
-                        confirm: true,
-                    },
-                    closeOnConfirm: false
-                }).then(function (isConfirm) {
-                    if (isConfirm === true) {
-                        $.ajax({
-                            headers: {
-                                'Accept': 'application/json',
-                                'Content-Type': 'application/json'
-                            },
-                            url: "https://localhost:44313/api/product",
-                            type: "post",
-                            dataType: "json",
-                            data: JSON.stringify(obj),
-                            success: function (data) {
-                                $("#tableProduct").DataTable().ajax.reload();
-                                $("#addProduct").modal('hide'),
-                                    swal(
-                                        "Success!",
-                                        `${obj.name} has been saved`,
-                                        "success"
-                                    )
-                            },
-                            failure: function (data) {
-                                swal(
-                                    "Internal Error",
-                                    "Oops, Product was not saved.",
-                                    "error"
-                                )
-                            }
-                        });
+    let option = "";
+    const supplier = {};
+    let createModalBody =
+        `
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <label for="productName">Product Name</label>
+                <input asp-for="Name" name="productName" type="text" class="form-control"
+                    id="productName" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="supplierName">Supplier Name</label>
+                <select class="custom-select" id="supplierName" required>
+                </select>
+                <div class="invalid-feedback">
+                    Please select a valid supplier.
+                </div>
+            </div>
+        </div>               
+        `;
+    $("#modalCreate").html(createModalBody);
+    $.ajax({
+        url: `https://localhost:44313/api/supplier/`,
+        type: 'get'
+    }).done((result) => {
+        option +=
+            `
+        <option selected disabled value="">Choose Supplier..</option>
+        `;
+        $.each(result.data, (key, val) => {
+            option +=
+                `
+            <option value=${val.id}>${val.name}</option>
+            `;
+            supplier[val.name] = val.id;
+        })
+        $("#supplierName").html(option);
+        let forms = document.getElementsByClassName("needs-validation");
+
+        let validation = Array.prototype.filter.call(forms, (form) => {
+            form.addEventListener('submit', (event) => {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                } else {
+                    event.preventDefault();
+                    let obj = {};
+                    let supplierName = "";
+                    obj.name = $("#productName").val();
+                    obj.supplierId = parseInt($("#supplierName").val());
+
+                    for (let i = 0; i < Object.keys(supplier).length; i++) {
+                        if (obj.supplierId == Object.values(supplier)[i]) supplierName = Object.keys(supplier)[i];
                     }
-                })
-                console.log(obj);
-                console.log('Form submitted');
-            }
-            form.classList.add('was-validated');
-        }, false);
-    });
+                    swal({
+                        title: "Are you sure?",
+                        text: `You will add Product : ${obj.name} and Supplier : ${supplierName}`,
+                        buttons: {
+                            cancel: true,
+                            confirm: true
+                        },
+                        closeOnConfirm: false
+                    }).then((isConfirm) => {
+                        if (isConfirm === true) {
+                            $.ajax({
+                                headers: {
+                                    'Accept': "application/json",
+                                    'Content-type': "application/json"
+                                },
+                                url: "https://localhost:44313/api/product",
+                                type: "post",
+                                dataType: "json",
+                                data: JSON.stringify(obj),
+                                success: (response) => {
+                                    $("#tableProduct").DataTable().ajax.reload();
+                                    $("#addProduct").modal('hide'),
+                                        swal(
+                                            "Success",
+                                            `${obj.name} has been saved`,
+                                            "success"
+                                        )
+                                },
+                                failure: (response) => {
+                                    swal(
+                                        "Internal Server Error",
+                                        `Oops, ${obj.name} was not saved`,
+                                        "error"
+                                    )
+                                }
+                            })
+                        }
+                    })
+                }
+                form.classList.add('was-validated');
+            }, false);
+        })
+    })
 }
 
 
@@ -166,6 +209,7 @@ function deleteProduct(id) {
         url: `https://localhost:44313/api/product/${id}`,
         type: 'get'
     }).done((result) => {
+        console.log(result);
         let objDelete = {};
         objDelete.id = result.data.id;
         objDelete.name = result.data.name
