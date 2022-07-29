@@ -275,16 +275,13 @@ function deleteProduct(id) {
 
 // Edit Section
 function editProduct(id) {
-    let idSupplier = 0;
     let option = "";
-    const supplierEdit = {};
+    const supplier = {};
     let supplierName = "";
     $.ajax({
         url: `https://localhost:44313/api/product/${id}`,
         type: 'get'
     }).done((result) => {
-        let supplier = result.data;
-        idSupplier = supplier.supplierId;
         let editModalBody =
             `
         <div class="form-row">
@@ -329,14 +326,17 @@ function editProduct(id) {
                     `
                 <option value=${val.id}>${val.name}</option>
                 `
-                supplierEdit[val.name] = val.id;
+                supplier[val.name] = val.id;
             })
             // console.log(option);
             $("#supplierId").html(option);
 
             let options = document.getElementById("supplierId").options;
+            console.log(options);
             for (let i = 0; i < options.length; i++) {
-                if (options[i].value == idSupplier) options[i].selected = true;
+                if (options[i].value == Object.values(supplier)[i - 1]) {
+                    options[i].selected = true;
+                }
             }
 
             // Fetch all the forms we want to apply custom Bootstrap validation styles to
@@ -354,8 +354,8 @@ function editProduct(id) {
                         objEdit.name = $("#productDeleteName").val();
                         objEdit.supplierId = parseInt($("#supplierId").val());
 
-                        for (let i = 0; i < Object.keys(supplierEdit).length; i++) {
-                            if (objEdit.supplierId == Object.values(supplierEdit)[i]) supplierName = Object.keys(supplierEdit)[i];
+                        for (let i = 0; i < Object.keys(supplier).length; i++) {
+                            if (objEdit.supplierId == Object.values(supplier)[i]) supplierName = Object.keys(supplier)[i];
                         }
                         console.log(supplierName);
                         console.log(objEdit);
