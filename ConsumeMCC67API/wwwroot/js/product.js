@@ -287,14 +287,11 @@ function editProduct(id) {
             // console.log(option);
             $("#supplierId").html(option);
 
-            for (let optionSupplier of document.getElementById("supplierId").options) {
-                console.log(optionSupplier);
-                console.log(idSupplier);
-                if (optionSupplier.value == idSupplier) {
-                    optionSupplier.selected = true;
-                    return;
-                }
+            let options = document.getElementById("supplierId").options;
+            for (let i = 0; i < options.length; i++) {
+                if (options[i].value == idSupplier) options[i].selected = true;
             }
+            console.log(options);
         })
     })
 
