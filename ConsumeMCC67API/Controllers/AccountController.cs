@@ -10,14 +10,15 @@ namespace ConsumeMCC67API.Controllers
     public class AccountController : Controller
     {
         string BaseUrl = "https://localhost:44313/api/";
-        public IActionResult Index()
+
+        public IActionResult Login()
         {
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Index(Login login)
+        public IActionResult Login(Login login)
         {
             if (ModelState.IsValid)
             {
