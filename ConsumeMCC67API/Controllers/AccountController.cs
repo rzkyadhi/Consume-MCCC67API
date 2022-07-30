@@ -24,7 +24,7 @@ namespace ConsumeMCC67API.Controllers
                 using (var client = new HttpClient())
                 {
                     client.BaseAddress = new Uri(BaseUrl);
-                    var postTask = client.PostAsJsonAsync<Login>("Account", login);
+                    var postTask = client.PostAsJsonAsync<Login>("Account/login", login);
                     postTask.Wait();
 
                     var result = postTask.Result;

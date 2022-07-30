@@ -11,57 +11,57 @@
             ['10 rows', '25 rows', '50 rows', 'Show all']
         ],
         buttons: [{
-                extend: 'pageLength',
-                className: 'btn btn-primary dropdown-toggle rounded'
-            },
+            extend: 'pageLength',
+            className: 'btn btn-primary dropdown-toggle rounded'
+        },
             'spacer',
-            {
-                extend: 'collection',
-                text: 'Export As',
-                className: 'btn btn-primary rounded',
-                buttons: [{
-                        extend: 'copy',
-                    },
-                    {
-                        extend: 'pdf',
-                        title: 'DataExportPDF - ProductMCC67',
-                        exportOptions: {
-                            columns: ':visible'
-                        },
-                        download: 'open'
-                    },
-                    {
-                        extend: 'excel',
-                        title: 'DataExportExcel - ProductMCC67',
-                        exportOptions: {
-                            columns: ':visible'
-                        },
-                        autoFilter: true,
-                        sheetName: 'ProductMCC67'
-                    },
-                    {
-                        extend: 'csv',
-                        title: 'DataExportCSV - ProductMCC67',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    }
-                ]
+        {
+            extend: 'collection',
+            text: 'Export As',
+            className: 'btn btn-primary rounded',
+            buttons: [{
+                extend: 'copy',
             },
-            'spacer',
             {
-                extend: 'colvis',
-                className: 'btn btn-primary rounded',
+                extend: 'pdf',
+                title: 'DataExportPDF - ProductMCC67',
+                exportOptions: {
+                    columns: ':visible'
+                },
+                download: 'open'
+            },
+            {
+                extend: 'excel',
+                title: 'DataExportExcel - ProductMCC67',
+                exportOptions: {
+                    columns: ':visible'
+                },
+                autoFilter: true,
+                sheetName: 'ProductMCC67'
+            },
+            {
+                extend: 'csv',
+                title: 'DataExportCSV - ProductMCC67',
+                exportOptions: {
+                    columns: ':visible'
+                }
             }
+            ]
+        },
+            'spacer',
+        {
+            extend: 'colvis',
+            className: 'btn btn-primary rounded',
+        }
         ],
         columnDefs: [{
-                orderable: false,
-                targets: -1
-            },
-            {
-                className: 'text-center',
-                targets: [0, 1, 2, 3]
-            }
+            orderable: false,
+            targets: -1
+        },
+        {
+            className: 'text-center',
+            targets: [0, 1, 2, 3]
+        }
         ],
         "ajax": {
             "url": "https://localhost:44313/api/product",
@@ -69,22 +69,22 @@
             "dataSrc": "data",
         },
         "columns": [{
-                "data": "id",
-                render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                }
-            },
-            {
-                "data": "name"
-            },
-            {
-                "data": "supplier.name"
-            },
-            {
-                // data: null,
-                render: function (data, type, row) {
+            "data": "id",
+            render: function (data, type, row, meta) {
+                return meta.row + 1;
+            }
+        },
+        {
+            "data": "name"
+        },
+        {
+            "data": "supplier.name"
+        },
+        {
+            // data: null,
+            render: function (data, type, row) {
 
-                    return `
+                return `
                                 <a type="button" onclick="editProduct(${row['id']})" data-toggle="modal" data-target="#editProduct" class="btn btn-warning text-light">
                                     Edit
                                 </a>
@@ -92,8 +92,8 @@
                                     Delete
                                 </a>`
 
-                }
             }
+        }
         ]
     });
 });
