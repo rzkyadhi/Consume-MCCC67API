@@ -28,13 +28,7 @@ namespace ConsumeMCC67API.Controllers
         public IActionResult Index()
         {
             var result = productRepository.Get();
-            var supplier = supplierRepository.Get();
-            if (supplier != null)
-            {
-                var suppliers = new SelectList(supplier, "Id", "Name");
-                if (suppliers.Count() > 0) ViewBag.SupplierViewBag = suppliers;
-                if (result != null) return View();
-            }
+            if (result != null) return View(result);
             return View();
         }
         #endregion Get
