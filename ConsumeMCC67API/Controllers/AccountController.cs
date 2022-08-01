@@ -49,5 +49,15 @@ namespace ConsumeMCC67API.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        public IActionResult Logout()
+        {
+            if (HttpContext.Session.IsAvailable) 
+            {
+                HttpContext.Session.Clear();
+                return RedirectToAction("Login", "Account");
+            }
+            return RedirectToAction("Login", "Account");
+        }
     }
 }
