@@ -55,24 +55,33 @@
                 <span class="nav-link-text">Dashboard</span>
               </a>
             </li>
+            @if(User.IsInRole("Manager"))
+            {
             <li class="nav-item">
-              <a class="nav-link" href="examples/icons.html">
+              <a class="nav-link" asp-controller="Product" asp-action="Index">
                 <i class="ni ni-planet text-orange"></i>
-                <span class="nav-link-text">Icons</span>
+                <span class="nav-link-text">Product</span>
               </a>
             </li>
+            }
+
+            @if (User.IsInRole("Staff"))
+            {
             <li class="nav-item">
+              <a class="nav-link" asp-controller="Supplier" asp-action="Index">
+                <i class="ni ni-single-02 text-yellow"></i>
+                <span class="nav-link-text">Supplier</span>
+              </a>
+            </li>
+            }
+
+            @* <li class="nav-item">
               <a class="nav-link" href="examples/map.html">
                 <i class="ni ni-pin-3 text-primary"></i>
                 <span class="nav-link-text">Google</span>
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="examples/profile.html">
-                <i class="ni ni-single-02 text-yellow"></i>
-                <span class="nav-link-text">Profile</span>
-              </a>
-            </li>
+
             <li class="nav-item">
               <a class="nav-link" href="examples/tables.html">
                 <i class="ni ni-bullet-list-67 text-default"></i>
@@ -96,7 +105,7 @@
                 <i class="ni ni-send text-dark"></i>
                 <span class="nav-link-text">Upgrade</span>
               </a>
-            </li>
+            </li> *@
           </ul>
           <!-- Divider -->
           <hr class="my-3">
@@ -353,9 +362,16 @@
                   <span class="avatar avatar-sm rounded-circle">
                     <img alt="Image placeholder" src="img/theme/team-4.jpg">
                   </span>
-                  <div class="media-body  ml-2  d-none d-lg-block">
-                    <span class="mb-0 text-sm  font-weight-bold">John Snow</span>
+                  @if(User.IsInRole("Manager")){
+                  <div class="media-body ml-2 d-none d-lg-block">
+                    <span class="mb-0 text-sm font-weight-bold">Manager</span>
                   </div>
+                  }
+                  @if(User.IsInRole("Staff")) {
+                    <div class="media-body ml-2 d-none d-lg-block">
+                    <span class="mb-0 text-sm font-weight-bold">Staff</span>
+                    </div>
+                  }
                 </div>
               </a>
               <div class="dropdown-menu  dropdown-menu-right ">
@@ -405,7 +421,7 @@
 <script src="~/lib/dashboard/vendor/jquery.scrollbar/jquery.scrollbar.min.js"></script>
 <script src="~/lib/dashboard/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js"></script>
 <!-- Optional JS -->
- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.2/chart.min.js"
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.2/chart.min.js"
   integrity="sha512-zjlf0U0eJmSo1Le4/zcZI51ks5SjuQXkU0yOdsOBubjSmio9iCUp8XPLkEAADZNBdR9crRy3cniZ65LF2w8sRA=="
   crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 @*<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.2/chart.esm.js"

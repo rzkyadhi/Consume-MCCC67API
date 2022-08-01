@@ -41,10 +41,13 @@ namespace ConsumeMCC67API.Controllers
                         HttpContext.Session.SetString("Id", data.Id.ToString());
                         HttpContext.Session.SetString("Email", data.Email);
                         HttpContext.Session.SetString("JWToken", tokenOnly);
+
+                        return RedirectToAction("Index", "Dashboard");
                     }
+                    return RedirectToAction("Index");
                 }
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index");
         }
     }
 }
