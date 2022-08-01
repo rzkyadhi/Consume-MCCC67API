@@ -127,5 +127,16 @@ namespace ConsumeMCC67API.Controllers
             });
         }
         #endregion
+
+        #region PostJSON
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult PostJSON(Product product)
+        {
+            var result = productRepository.Post(product);
+            if (result > 0) return RedirectToAction("Index", "Product");
+            return View();
+        }
+        #endregion
     }
 }

@@ -83,5 +83,23 @@ namespace ConsumeMCC67API.Controllers
             return View();
         }
         #endregion Delete
+
+        #region GetJSON
+        public ActionResult GetJSON()
+        {
+            var result = supplierRepository.Get();
+            if (result != null) return Ok(new
+            {
+                status = 200,
+                message = "SUCCESS",
+                data = result
+            });
+            return NotFound(new
+            {
+                status = 404,
+                message = "NOT FOUND"
+            });
+        }
+        #endregion
     }
 }

@@ -17,7 +17,30 @@
             <tbody>
             </tbody>
         </table>
-        <a class="btn btn-primary" asp-action="Create" asp-controller="Product">Add Product</a>
+        <a class="btn btn-primary text-light" onclick=addProduct() data-toggle="modal" data-target="#addProduct" >Add Product</a>
+    </div>
+
+    <!-- ModalCreate -->
+    <div class="modal fade" id="addProduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Product</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                @Html.AntiForgeryToken()
+                <form class="needs-validation" novalidate>
+                    <div class="modal-body" id="modalCreate">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button id="submitBtn" class="btn btn-primary" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
     
 
@@ -42,5 +65,6 @@
     </script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.colVis.min.js">
     </script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="~/js/product.js"></script>
     }
