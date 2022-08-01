@@ -12,7 +12,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ConsumeMCC67API.Controllers
 {
-	/*[Authorize(Roles = "Staff")]*/
+    /*[Authorize(Roles = "Staff")]*/
+    [Authorize]
 	public class ProductController : Controller
     {
         private readonly ProductRepository productRepository;
@@ -108,5 +109,14 @@ namespace ConsumeMCC67API.Controllers
             return View();
 		}
         #endregion Delete
+
+        #region GetJSON
+        public JsonResult GetJSON()
+        {
+            var result = productRepository.Get();
+            if (result != null) return Json(result);
+            return Json(result);
+        }
+        #endregion
     }
 }

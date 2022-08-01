@@ -1,12 +1,14 @@
 ﻿$.ajax({
-    url: "https://localhost:44313/api/product"
+    url: "https://localhost:44317/product/GetJSON"
 }).done((result) => {
+    console.log(result);
+    console.log(result.length);
     let supplier = [];
     let hashMap = {};
 
     // Get Supplier List
-    for (let i = 0; i < result.data.length; i++) {
-        supplier.push(result.data[i].supplier.name);
+    for (let i = 0; i < result.length; i++) {
+        supplier.push(result[i].supplier.name);
     }
 
     // Pushing into HashMap
