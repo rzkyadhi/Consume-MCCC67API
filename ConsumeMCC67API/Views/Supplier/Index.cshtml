@@ -1,20 +1,10 @@
-﻿
+﻿@model IEnumerable<ConsumeMCC67API.Models.Supplier>
+@{
+Layout = "_LayoutDashboard";
+}
 
-@*Library for showing token on views*@
-@using Microsoft.AspNetCore.Http
-@*@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor*@
-
-@model IEnumerable<ConsumeMCC67API.Models.Supplier>
-
-<h1>Supplier List</h1>
-
-@*Showing Token On Views*@
-@*<p>
-    @HttpContextAccessor.HttpContext.Session.GetString("JWToken")
-</p>*@
-
-<table class="table table-bordered table-info table-hover">
-	<thead>
+<table class="table table-bordered table-hover">
+	<thead class="text-center">
 		<tr>
 			<th scope="col">Id</th>
 			<th scope="col">Supplier Name</th>
@@ -24,7 +14,7 @@
 	<tbody>
 		@foreach (var item in Model)
 		{
-			<tr>
+			<tr class="text-center">
 				<td>@Html.DisplayFor(model => item.Id)</td>
 				<td>@Html.DisplayFor(model => item.Name)</td>
 				<td>
