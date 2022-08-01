@@ -111,11 +111,20 @@ namespace ConsumeMCC67API.Controllers
         #endregion Delete
 
         #region GetJSON
-        public JsonResult GetJSON()
+        public ActionResult GetJSON()
         {
             var result = productRepository.Get();
-            if (result != null) return Json(result);
-            return Json(result);
+            if (result != null) return Ok(new
+            {
+                status = 200,
+                message = "SUCCESS",
+                data = result
+            });
+            return NotFound(new
+            {
+                status = 404,
+                message = "NOT FOUND"
+            });
         }
         #endregion
     }

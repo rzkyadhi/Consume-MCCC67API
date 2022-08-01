@@ -1,22 +1,22 @@
 ﻿@model IEnumerable<ConsumeMCC67API.Models.Product>
 
-@{
-Layout = "_LayoutDashboard";
-}
+    @{
+    Layout = "_LayoutDashboard";
+    }
 
 
-<table class="table table-bordered table-hover">
-    <thead class="text-center">
-        <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Name</th>
-            <th scope="col">Supplier Name</th>
-            <th scope="col">Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+    <table class="table table-bordered table-hover" id="tableProduct">
+        <thead class="text-center">
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Supplier Name</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @* @foreach (var item in Model)
+            {
             <tr class="text-center">
                 <td>@Html.DisplayFor(model => item.Id)</td>
                 <td>@Html.DisplayFor(model => item.Name)</td>
@@ -26,8 +26,32 @@ Layout = "_LayoutDashboard";
                     <a class="btn btn-danger" asp-route-id="@item.Id" asp-action="Delete">Delete</a>
                 </td>
             </tr>
-        }
-    </tbody>
-</table>
+            } *@
+        </tbody>
+    </table>
 
-<a class="btn btn-primary" asp-action="Create" asp-controller="Product">Add Product</a>
+    <a class="btn btn-primary" asp-action="Create" asp-controller="Product">Add Product</a>
+
+    @section Scripts{
+    <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js">
+    </script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js">
+    </script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js">
+    </script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.bootstrap4.min.js">
+    </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js">
+    </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js">
+    </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js">
+    </script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js">
+    </script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js">
+    </script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.colVis.min.js">
+    </script>
+    <script src="~/js/product.js"></script>
+    }
