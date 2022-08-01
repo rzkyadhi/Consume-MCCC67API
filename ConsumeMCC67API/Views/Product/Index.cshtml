@@ -4,33 +4,22 @@
     Layout = "_LayoutDashboard";
     }
 
-
-    <table class="table table-bordered table-hover" id="tableProduct">
-        <thead class="text-center">
-            <tr>
-                <th scope="col">Id</th>
-                <th scope="col">Name</th>
-                <th scope="col">Supplier Name</th>
-                <th scope="col">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @* @foreach (var item in Model)
-            {
-            <tr class="text-center">
-                <td>@Html.DisplayFor(model => item.Id)</td>
-                <td>@Html.DisplayFor(model => item.Name)</td>
-                <td>@Html.DisplayFor(model => item.Supplier.Name)</td>
-                <td>
-                    <a class="btn btn-warning" asp-route-id="@item.Id" asp-action="Edit">Edit</a>
-                    <a class="btn btn-danger" asp-route-id="@item.Id" asp-action="Delete">Delete</a>
-                </td>
-            </tr>
-            } *@
-        </tbody>
-    </table>
-
-    <a class="btn btn-primary" asp-action="Create" asp-controller="Product">Add Product</a>
+    <div class="container">
+        <table class="table table-bordered table-hover" id="tableProduct">
+            <thead class="text-center">
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Supplier Name</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <a class="btn btn-primary" asp-action="Create" asp-controller="Product">Add Product</a>
+    </div>
+    
 
     @section Scripts{
     <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js">

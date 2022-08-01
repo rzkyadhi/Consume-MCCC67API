@@ -49,10 +49,10 @@
             ]
         },
             'spacer',
-        {
-            extend: 'colvis',
-            className: 'btn btn-primary rounded',
-        }
+        // {
+        //     extend: 'colvis',
+        //     className: 'btn btn-primary rounded',
+        // }
         ],
         columnDefs: [{
             orderable: false,
