@@ -1,6 +1,7 @@
 ﻿using ConsumeMCC67API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Net.Http;
@@ -18,7 +19,7 @@ namespace ConsumeMCC67API.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login(Login login)
+        public IActionResult Auth(Login login)
         {
             if (ModelState.IsValid)
             {
@@ -33,9 +34,13 @@ namespace ConsumeMCC67API.Controllers
                     {
                         var readTask = result.Content.ReadAsStringAsync().Result;
                         var parsedObject = JObject.Parse(readTask);
-                        var dataOnly = parsedObject["token"].ToString();
+                        var dataOnly = parsedObject["data"].ToString();
+                        var tokenOnly = parsedObject["token"].ToString();
 
-                        HttpContext.Session.SetString("JWToken", dataOnly);
+                        var data = JsonConvert.DeserializeObject<Login>(dataOnly);
+                        HttpContext.Session.SetString("Id", data.Id.ToString());
+                        HttpContext.Session.SetString("Email", data.Email);
+                        HttpContext.Session.SetString("JWToken", tokenOnly);
                     }
                 }
             }

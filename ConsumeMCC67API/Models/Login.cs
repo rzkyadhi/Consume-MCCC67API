@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ConsumeMCC67API.Models
 {
     public class Login
     {
+        public int Id { get; set; }
         [Required(ErrorMessage = "Email Can't Empty, Try Again !")]
         [EmailAddress]
         public string Email { get; set; }
