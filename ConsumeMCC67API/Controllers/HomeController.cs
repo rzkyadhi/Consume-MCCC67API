@@ -41,19 +41,19 @@ namespace ConsumeMCC67API.Controllers
         [HttpGet("Unauthorized/")]
         public IActionResult Unauthorized()
         {
-            return View("401");
+            return View("Status401");
         }
 
         [HttpGet("Forbidden/")]
         public IActionResult Forbidden()
         {
-            return View("403");
+            return View("Status403");
         }
 
         [HttpGet("NotFound/")]
         public IActionResult NotFound()
         {
-            return View("404");
+            return View("Status404");
         }
     }
 }
