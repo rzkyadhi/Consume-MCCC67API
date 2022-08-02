@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using Microsoft.AspNetCore.Http;
+using System.Net;
 
 namespace ConsumeMCC67API
 {
@@ -53,6 +54,10 @@ namespace ConsumeMCC67API
             {
                 var request = context.HttpContext.Request;
                 var response = context.HttpContext.Response;
+
+                if (response.StatusCode.Equals((int)HttpStatusCode.Unauthorized)) response.Redirect("/unauthorized");
+                if (response.StatusCode.Equals((int)HttpStatusCode.Forbidden)) response.Redirect("/forbidden");
+                if (response.StatusCode.Equals((int)HttpStatusCode.NotFound)) response.Redirect("/notfound");
             });
             app.UseHttpsRedirection();
             app.UseStaticFiles();

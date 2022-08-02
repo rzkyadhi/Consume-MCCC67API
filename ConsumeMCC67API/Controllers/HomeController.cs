@@ -22,37 +22,38 @@ namespace ConsumeMCC67API.Controllers
             _logger = logger;
         }
 
-        public async Task<ActionResult> Index()
+        public IActionResult Index()
         {
-            IEnumerable<Supplier> Supplier = null;
+            return View();
+        }
 
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("https://localhost:44313/api/");
-                var responseTask = client.GetAsync("Supplier");
-                responseTask.Wait();
+        public IActionResult Privacy()
+        {
+            return View();
+        }
 
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
-                {
-                    //var readTask = result.Content.ReadAsAsync<IList<Produk>>();
-                    var readTask = result.Content.ReadAsStringAsync().Result;
-                    var parsedObject = JObject.Parse(readTask);
-                    var dataOnly = parsedObject["data"].ToString();
-                    //readTask.Wait();
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
 
-                    //produk = readTask.Result;
-                    Supplier = JsonConvert.DeserializeObject<List<Supplier>>(dataOnly);
-                }
-                else
-                {
-                    Supplier = Enumerable.Empty<Supplier>();
+        [HttpGet("Unauthorized/")]
+        public IActionResult Unauthorized()
+        {
+            return View("401");
+        }
 
-                    ModelState.AddModelError(string.Empty, "Server error. please contact administrator yg.");
-                }
-            }
+        [HttpGet("Forbidden/")]
+        public IActionResult Forbidden()
+        {
+            return View("403");
+        }
 
-            return View(Supplier);
+        [HttpGet("NotFound/")]
+        public IActionResult NotFound()
+        {
+            return View("404");
         }
     }
 }
