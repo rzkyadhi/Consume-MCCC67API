@@ -28,8 +28,8 @@ namespace ConsumeMCC67API.Controllers
         #region Get
         public IActionResult Index()
         {
-            var result = productRepository.Get();
-            if (result != null) return View(result);
+            /*var result = productRepository.Get();
+            if (result != null) return View(result);*/
             return View();
         }
         #endregion Get

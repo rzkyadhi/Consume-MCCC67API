@@ -1,5 +1,11 @@
 ﻿$(document).ready(function () {
     var table = $('#tableProduct').DataTable({
+        "language": {
+            "paginate": {
+                "previous": "<i class='ni ni-bold-left'></i>",
+                "next": "<i class='ni ni-bold-right'></i>"
+            }
+        },
         lengthChange: false,
         "initComplete": function () {
             table.buttons().container().appendTo('#tableProduct_wrapper .col-md-6:eq(0)');
@@ -93,7 +99,7 @@
 
                 }
             }
-        ]
+        ],
     });
 });
 
@@ -253,36 +259,36 @@ function deleteProduct(id) {
         console.log('Form submitted');
     })
 
-        // Delete Section
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        var formsDelete = document.getElementsByClassName('delete-validation');
-        // Loop over them and prevent submission
-        var validationDelete = Array.prototype.filter.call(formsDelete, function (form) {
-            form.addEventListener('submit', function (event) {
-                if (form.checkValidity() === false) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-                form.classList.add('was-validated');
+    // Delete Section
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var formsDelete = document.getElementsByClassName('delete-validation');
+    // Loop over them and prevent submission
+    var validationDelete = Array.prototype.filter.call(formsDelete, function (form) {
+        form.addEventListener('submit', function (event) {
+            if (form.checkValidity() === false) {
                 event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+            event.preventDefault();
 
 
-            }, false);
-        });
-    }
+        }, false);
+    });
+}
 
-    // Edit Section
-    function editProduct(id) {
-        let option = "";
-        const supplier = {};
-        let supplierName = "";
-        $.ajax({
-            url: `https://localhost:44317/product/getjsonbyid/${id}`,
-            type: 'get'
-        }).done((result) => {
-            console.log(result.data);
-            let editModalBody =
-                `
+// Edit Section
+function editProduct(id) {
+    let option = "";
+    const supplier = {};
+    let supplierName = "";
+    $.ajax({
+        url: `https://localhost:44317/product/getjsonbyid/${id}`,
+        type: 'get'
+    }).done((result) => {
+        console.log(result.data);
+        let editModalBody =
+            `
         <div class="form-row">
             <div class="col-md-4 mb-3">
                     <label for="productId">Product Id</label>
@@ -311,102 +317,102 @@ function deleteProduct(id) {
             </div>
         </div>
         `;
-            let modalTest = $("#modalEdit").html(editModalBody);
-            console.log(modalTest);
-            $.ajax({
-                url: `https://localhost:44317/supplier/getjson`,
-                type: 'get'
-            }).done((result) => {
-                console.log(result.data);
-                option +=
-                    `
+        let modalTest = $("#modalEdit").html(editModalBody);
+        console.log(modalTest);
+        $.ajax({
+            url: `https://localhost:44317/supplier/getjson`,
+            type: 'get'
+        }).done((result) => {
+            console.log(result.data);
+            option +=
+                `
             <option value="">Choose Supplier</option>
             `
-                $.each(result.data, (key, val) => {
-                    option +=
-                        `
+            $.each(result.data, (key, val) => {
+                option +=
+                    `
                 <option value=${val.id}>${val.name}</option>
                 `
-                    supplier[val.name] = val.id;
-                })
-                // console.log(option);
-                let test = $("#supplierId").html(option);
-                console.log(option);
-                console.log(test);
-                let options = document.getElementById("supplierId").options;
-
-                console.log(options);
-                for (let i = 0; i < options.length; i++) {
-                    if (options[i].value == Object.values(supplier)[i - 1]) {
-                        options[i].selected = true;
-                    }
-                }
-
-                // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                var formsEdit = document.getElementsByClassName('edit-validation');
-                // Loop over them and prevent submission
-                var validationEdit = Array.prototype.filter.call(formsEdit, function (form) {
-                    form.addEventListener('submit', function (event) {
-                        if (form.checkValidity() === false) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                        } else {
-                            event.preventDefault();
-                            let objEdit = {};
-                            objEdit.id = parseInt($("#productId").val());
-                            objEdit.name = $("#productDeleteName").val();
-                            objEdit.supplierId = parseInt($("#supplierId").val());
-
-                            for (let i = 0; i < Object.keys(supplier).length; i++) {
-                                if (objEdit.supplierId == Object.values(supplier)[i]) supplierName = Object.keys(supplier)[i];
-                            }
-                            console.log(supplierName);
-                            console.log(objEdit);
-                            swal({
-                                title: "Are you sure?",
-                                text: `You will edit product id : ${objEdit.id} product name : ${objEdit.name} with supplier ${supplierName}`,
-                                buttons: {
-                                    cancel: true,
-                                    confirm: true,
-                                },
-                                closeOnConfirm: false
-                            }).then(function (isConfirm) {
-                                if (isConfirm === true) {
-                                    $.ajax({
-                                        url: "https://localhost:44317/product/editjson",
-                                        type: "put",
-                                        dataType: "json",
-                                        data: objEdit,
-                                        beforeSend: data => {
-                                            data.setRequestHeader("RequestVerificationToken", $("[name='__RequestVerificationToken']").val());
-                                        },
-                                        success: function (data) {
-                                            $("#tableProduct").DataTable().ajax.reload();
-                                            $("#editProduct").modal('hide'),
-                                                swal(
-                                                    "Success!",
-                                                    `${objEdit.name} has been edited`,
-                                                    "success"
-                                                )
-                                        },
-                                        failure: function (data) {
-                                            swal(
-                                                "Internal Error",
-                                                "Oops, Product was not saved.",
-                                                "error"
-                                            )
-                                        }
-                                    });
-                                }
-                            })
-                        }
-                        form.classList.add('was-validated');
-
-                        console.log('Form submitted');
-                    }, false);
-                });
+                supplier[val.name] = val.id;
             })
+            // console.log(option);
+            let test = $("#supplierId").html(option);
+            console.log(option);
+            console.log(test);
+            let options = document.getElementById("supplierId").options;
 
+            console.log(options);
+            for (let i = 0; i < options.length; i++) {
+                if (options[i].value == Object.values(supplier)[i - 1]) {
+                    options[i].selected = true;
+                }
+            }
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var formsEdit = document.getElementsByClassName('edit-validation');
+            // Loop over them and prevent submission
+            var validationEdit = Array.prototype.filter.call(formsEdit, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    } else {
+                        event.preventDefault();
+                        let objEdit = {};
+                        objEdit.id = parseInt($("#productId").val());
+                        objEdit.name = $("#productDeleteName").val();
+                        objEdit.supplierId = parseInt($("#supplierId").val());
+
+                        for (let i = 0; i < Object.keys(supplier).length; i++) {
+                            if (objEdit.supplierId == Object.values(supplier)[i]) supplierName = Object.keys(supplier)[i];
+                        }
+                        console.log(supplierName);
+                        console.log(objEdit);
+                        swal({
+                            title: "Are you sure?",
+                            text: `You will edit product id : ${objEdit.id} product name : ${objEdit.name} with supplier ${supplierName}`,
+                            buttons: {
+                                cancel: true,
+                                confirm: true,
+                            },
+                            closeOnConfirm: false
+                        }).then(function (isConfirm) {
+                            if (isConfirm === true) {
+                                $.ajax({
+                                    url: "https://localhost:44317/product/editjson",
+                                    type: "put",
+                                    dataType: "json",
+                                    data: objEdit,
+                                    beforeSend: data => {
+                                        data.setRequestHeader("RequestVerificationToken", $("[name='__RequestVerificationToken']").val());
+                                    },
+                                    success: function (data) {
+                                        $("#tableProduct").DataTable().ajax.reload();
+                                        $("#editProduct").modal('hide'),
+                                            swal(
+                                                "Success!",
+                                                `${objEdit.name} has been edited`,
+                                                "success"
+                                            )
+                                    },
+                                    failure: function (data) {
+                                        swal(
+                                            "Internal Error",
+                                            "Oops, Product was not saved.",
+                                            "error"
+                                        )
+                                    }
+                                });
+                            }
+                        })
+                    }
+                    form.classList.add('was-validated');
+
+                    console.log('Form submitted');
+                }, false);
+            });
         })
 
-    }
+    })
+
+}
