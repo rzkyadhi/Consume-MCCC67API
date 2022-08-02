@@ -112,7 +112,7 @@ function addProduct() {
         <div class="form-row" id="form-post">
             <div class="col-md-6 mb-3">
                 <label for="productName">Product Name</label>
-                <input asp-for="Name" name="productName" type="text" class="form-control"
+                <input asp-for="Name" name="productName" type="text" class="form-control form-control-alternative"
                     id="productName" required>
                 <div class="valid-feedback">
                     Looks good!
@@ -120,7 +120,7 @@ function addProduct() {
             </div>
             <div class="col-md-6 mb-3">
                 <label for="supplierName">Supplier Name</label>
-                <select class="custom-select" id="supplierName" required>
+                <select class="custom-select form-control-alternative" id="supplierName" required>
                 </select>
                 <div class="invalid-feedback">
                     Please select a valid supplier.
@@ -167,9 +167,9 @@ function addProduct() {
                         text: `You will add Product : ${obj.name} and Supplier : ${supplierName}`,
                         buttons: {
                             cancel: true,
-                            confirm: true
+                            confirm: true,
+                            closeModal: false
                         },
-                        closeOnConfirm: false
                     }).then((isConfirm) => {
                         if (isConfirm === true) {
                             $.ajax({
@@ -223,8 +223,8 @@ function deleteProduct(id) {
             buttons: {
                 cancel: true,
                 confirm: true,
+                closeModal: false
             },
-            closeOnConfirm: false
         }).then(function (isConfirm) {
             if (isConfirm === true) {
                 $.ajax({
@@ -289,7 +289,7 @@ function editProduct(id) {
         <div class="form-row">
             <div class="col-md-4 mb-3">
                     <label for="productId">Product Id</label>
-                    <input name="productId" type="number" class="form-control"
+                    <input name="productId" type="number" class="form-control form-control-alternative"
                         id="productId" value=${result.data.id} readonly required>
                     <div class="valid-feedback">
                         Looks good!
@@ -297,7 +297,7 @@ function editProduct(id) {
                 </div>
             <div class="col-md-4 mb-3">
                 <label for="productDeleteName">Product Name</label>
-                <input id="productDeleteName" type="text" class="form-control"
+                <input id="productDeleteName" type="text" class="form-control form-control-alternative"
                          value="${result.data['name']}" required>
                 <div class="valid-feedback">
                     Looks good!
@@ -305,7 +305,7 @@ function editProduct(id) {
             </div>
             <div class="col-md-4 mb-3">
                 <label for="supplierId">Supplier Name</label>
-                <select class="form-control" id="supplierId">
+                <select class="form-control form-control-alternative" id="supplierId">
                 
                 </select>
                 <div class="invalid-feedback">
@@ -332,9 +332,6 @@ function editProduct(id) {
             })
             $("#supplierId").html(option);
             let options = document.getElementById("supplierId").options;
-            
-            console.log(options);
-            console.log(supplier);
             for (let i = 0; i < options.length; i++) {
                 if (options[i].value == Object.values(supplier)[idSupplier - 1]) {
                     options[i].selected = true;
@@ -365,8 +362,8 @@ function editProduct(id) {
                             buttons: {
                                 cancel: true,
                                 confirm: true,
+                                closeModal: false
                             },
-                            closeOnConfirm: false
                         }).then(function (isConfirm) {
                             if (isConfirm === true) {
                                 $.ajax({
