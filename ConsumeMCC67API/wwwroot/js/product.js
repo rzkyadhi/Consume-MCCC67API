@@ -272,138 +272,142 @@ function addProduct() {
 //     });
 // }
 
-// // Edit Section
-// function editProduct(id) {
-//     let option = "";
-//     const supplier = {};
-//     let supplierName = "";
-//     $.ajax({
-//         url: `https://localhost:44313/api/product/${id}`,
-//         type: 'get'
-//     }).done((result) => {
-//         let editModalBody =
-//             `
-//         <div class="form-row">
-//             <div class="col-md-4 mb-3">
-//                     <label for="productId">Product Id</label>
-//                     <input name="productId" type="number" class="form-control"
-//                         id="productId" value=${result.data.id} readonly required>
-//                     <div class="valid-feedback">
-//                         Looks good!
-//                     </div>
-//                 </div>
-//             <div class="col-md-4 mb-3">
-//                 <label for="productDeleteName">Product Name</label>
-//                 <input id="productDeleteName" type="text" class="form-control"
-//                          value="${result.data['name']}" required>
-//                 <div class="valid-feedback">
-//                     Looks good!
-//                 </div>
-//             </div>
-//             <div class="col-md-4 mb-3">
-//                 <label for="supplierId">Supplier Name</label>
-//                 <select class="form-control" id="supplierId">
+// Edit Section
+function editProduct(id) {
+    let option = "";
+    const supplier = {};
+    let supplierName = "";
+    $.ajax({
+        url: `https://localhost:44317/product/getjsonbyid/${id}`,
+        type: 'get'
+    }).done((result) => {
+        console.log(result.data);
+        let editModalBody =
+            `
+        <div class="form-row">
+            <div class="col-md-4 mb-3">
+                    <label for="productId">Product Id</label>
+                    <input name="productId" type="number" class="form-control"
+                        id="productId" value=${result.data.id} readonly required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+            <div class="col-md-4 mb-3">
+                <label for="productDeleteName">Product Name</label>
+                <input id="productDeleteName" type="text" class="form-control"
+                         value="${result.data['name']}" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="supplierId">Supplier Name</label>
+                <select class="form-control" id="supplierId">
                 
-//                 </select>
-//                 <div class="invalid-feedback">
-//                     Please select a valid supplier.
-//                 </div>
-//             </div>
-//         </div>
-//         `;
-//         $("#modalEdit").html(editModalBody);
-//         $.ajax({
-//             url: `https://localhost:44313/api/supplier`,
-//             type: 'get'
-//         }).done((result) => {
-//             option +=
-//                 `
-//             <option value="">Choose Supplier</option>
-//             `
-//             $.each(result.data, (key, val) => {
-//                 option +=
-//                     `
-//                 <option value=${val.id}>${val.name}</option>
-//                 `
-//                 supplier[val.name] = val.id;
-//             })
-//             // console.log(option);
-//             $("#supplierId").html(option);
+                </select>
+                <div class="invalid-feedback">
+                    Please select a valid supplier.
+                </div>
+            </div>
+        </div>
+        `;
+        let modalTest = $("#modalEdit").html(editModalBody);
+        console.log(modalTest);
+        $.ajax({
+            url: `https://localhost:44317/supplier/getjson`,
+            type: 'get'
+        }).done((result) => {
+            console.log(result.data);
+            option +=
+                `
+            <option value="">Choose Supplier</option>
+            `
+            $.each(result.data, (key, val) => {
+                option +=
+                    `
+                <option value=${val.id}>${val.name}</option>
+                `
+                supplier[val.name] = val.id;
+            })
+            // console.log(option);
+            let test = $("#supplierId").html(option);
+            console.log(option);
+            console.log(test);
+            let options = document.getElementById("supplierId").options;
+            
+            console.log(options);
+            for (let i = 0; i < options.length; i++) {
+                if (options[i].value == Object.values(supplier)[i - 1]) {
+                    options[i].selected = true;
+                }
+            }
 
-//             let options = document.getElementById("supplierId").options;
-//             console.log(options);
-//             for (let i = 0; i < options.length; i++) {
-//                 if (options[i].value == Object.values(supplier)[i - 1]) {
-//                     options[i].selected = true;
-//                 }
-//             }
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var formsEdit = document.getElementsByClassName('edit-validation');
+            // Loop over them and prevent submission
+            var validationEdit = Array.prototype.filter.call(formsEdit, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    } else {
+                        event.preventDefault();
+                        let objEdit = {};
+                        objEdit.id = parseInt($("#productId").val());
+                        objEdit.name = $("#productDeleteName").val();
+                        objEdit.supplierId = parseInt($("#supplierId").val());
 
-//             // Fetch all the forms we want to apply custom Bootstrap validation styles to
-//             var formsEdit = document.getElementsByClassName('edit-validation');
-//             // Loop over them and prevent submission
-//             var validationEdit = Array.prototype.filter.call(formsEdit, function (form) {
-//                 form.addEventListener('submit', function (event) {
-//                     if (form.checkValidity() === false) {
-//                         event.preventDefault();
-//                         event.stopPropagation();
-//                     } else {
-//                         event.preventDefault();
-//                         let objEdit = {};
-//                         objEdit.id = parseInt($("#productId").val());
-//                         objEdit.name = $("#productDeleteName").val();
-//                         objEdit.supplierId = parseInt($("#supplierId").val());
+                        for (let i = 0; i < Object.keys(supplier).length; i++) {
+                            if (objEdit.supplierId == Object.values(supplier)[i]) supplierName = Object.keys(supplier)[i];
+                        }
+                        console.log(supplierName);
+                        console.log(objEdit);
+                        swal({
+                            title: "Are you sure?",
+                            text: `You will edit product id : ${objEdit.id} product name : ${objEdit.name} with supplier ${supplierName}`,
+                            buttons: {
+                                cancel: true,
+                                confirm: true,
+                            },
+                            closeOnConfirm: false
+                        }).then(function (isConfirm) {
+                            if (isConfirm === true) {
+                                $.ajax({
+                                    url: "https://localhost:44317/product/editjson",
+                                    type: "put",
+                                    dataType: "json",
+                                    data: objEdit,
+                                    beforeSend: data => {
+                                        data.setRequestHeader("RequestVerificationToken", $("[name='__RequestVerificationToken']").val());
+                                    },
+                                    success: function (data) {
+                                        $("#tableProduct").DataTable().ajax.reload();
+                                        $("#editProduct").modal('hide'),
+                                            swal(
+                                                "Success!",
+                                                `${objEdit.name} has been edited`,
+                                                "success"
+                                            )
+                                    },
+                                    failure: function (data) {
+                                        swal(
+                                            "Internal Error",
+                                            "Oops, Product was not saved.",
+                                            "error"
+                                        )
+                                    }
+                                });
+                            }
+                        })
+                    }
+                    form.classList.add('was-validated');
 
-//                         for (let i = 0; i < Object.keys(supplier).length; i++) {
-//                             if (objEdit.supplierId == Object.values(supplier)[i]) supplierName = Object.keys(supplier)[i];
-//                         }
-//                         console.log(supplierName);
-//                         console.log(objEdit);
-//                         swal({
-//                             title: "Are you sure?",
-//                             text: `You will edit product id : ${objEdit.id} product name : ${objEdit.name} with supplier ${supplierName}`,
-//                             buttons: {
-//                                 cancel: true,
-//                                 confirm: true,
-//                             },
-//                             closeOnConfirm: false
-//                         }).then(function (isConfirm) {
-//                             if (isConfirm === true) {
-//                                 $.ajax({
-//                                     headers: {
-//                                         'Accept': 'application/json',
-//                                         'Content-Type': 'application/json'
-//                                     },
-//                                     url: "https://localhost:44313/api/product",
-//                                     type: "put",
-//                                     dataType: "json",
-//                                     data: JSON.stringify(objEdit),
-//                                     success: function (data) {
-//                                         $("#tableProduct").DataTable().ajax.reload();
-//                                         $("#editProduct").modal('hide'),
-//                                             swal(
-//                                                 "Success!",
-//                                                 `${objEdit.name} has been edited`,
-//                                                 "success"
-//                                             )
-//                                     },
-//                                     failure: function (data) {
-//                                         swal(
-//                                             "Internal Error",
-//                                             "Oops, Product was not saved.",
-//                                             "error"
-//                                         )
-//                                     }
-//                                 });
-//                             }
-//                         })
-//                     }
-//                     form.classList.add('was-validated');
+                    console.log('Form submitted');
+                }, false);
+            });
+        })
 
-//                     console.log('Form submitted');
-//                 }, false);
-//             });
-//         })
+    })
 
-//     })
-
-// }
+}

@@ -146,5 +146,40 @@ namespace ConsumeMCC67API.Controllers
             });
         }
         #endregion
+
+        #region EditJSON
+        public ActionResult GetJSONById(int id)
+        {
+            var result = productRepository.Get(id);
+            if (result != null) return Ok(new
+            {
+                status = 200,
+                message = "SUCCESS",
+                data = result
+            });
+            return NotFound(new
+            {
+                status = 404,
+                message = "NOT FOUND"
+            });
+        }
+
+        [HttpPut]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditJson(Product product)
+        {
+            var result = productRepository.Put(product);
+            if (result == System.Net.HttpStatusCode.OK) return Ok(new
+            {
+                status = 200,
+                message = "EDITED"
+            });
+            return BadRequest(new
+            {
+                status = 400,
+                message = "Bad Request"
+            });
+        }
+        #endregion EditJSON
     }
 }
