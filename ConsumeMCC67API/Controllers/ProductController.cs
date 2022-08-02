@@ -134,8 +134,16 @@ namespace ConsumeMCC67API.Controllers
         public ActionResult PostJSON(Product product)
         {
             var result = productRepository.Post(product);
-            if (result > 0) return RedirectToAction("Index", "Product");
-            return View();
+            if (result == System.Net.HttpStatusCode.Created) return Ok(new
+            {
+                status = result,
+                message = "CREATED"
+            });
+            return BadRequest(new
+            {
+                status = 400,
+                message = "Bad Request"
+            });
         }
         #endregion
     }
