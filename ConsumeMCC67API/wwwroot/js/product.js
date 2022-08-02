@@ -90,12 +90,12 @@
                 render: function (data, type, row) {
 
                     return `
-                                <a type="button" onclick="editProduct(${row['id']})" data-toggle="modal" data-target="#editProduct" class="btn btn-warning text-light">
+                                <button type="button" onclick="editProduct(${row['id']})" data-toggle="modal" data-target="#editProduct" class="btn btn-warning">
                                     Edit
-                                </a>
-                                <a type="button" onclick="deleteProduct(${row['id']})" class="btn btn-danger text-light">
+                                </button>
+                                <button type="button" onclick="deleteProduct(${row['id']})" class="btn btn-danger">
                                     Delete
-                                </a>`
+                                </button>`
 
                 }
             }
@@ -162,7 +162,6 @@ function addProduct() {
                     for (let i = 0; i < Object.keys(supplier).length; i++) {
                         if (obj.supplierId == Object.values(supplier)[i]) supplierName = Object.keys(supplier)[i];
                     }
-                    console.log(obj);
                     swal({
                         title: "Are you sure?",
                         text: `You will add Product : ${obj.name} and Supplier : ${supplierName}`,
@@ -214,12 +213,10 @@ function deleteProduct(id) {
         url: `https://localhost:44317/product/getjsonbyid/${id}`,
         type: 'get'
     }).done((result) => {
-        console.log(result);
         let objDelete = {};
         objDelete.id = result.data.id;
         objDelete.name = result.data.name
-        objDelete.supplierId = result.data.supplierId
-        console.log(objDelete);
+        objDelete.supplierId = result.data.supplierId;
         swal({
             title: "Are you sure?",
             text: `You want to delete product id : ${objDelete.id} product name : ${objDelete.name} with supplier ${objDelete.supplierId}`,
@@ -256,7 +253,6 @@ function deleteProduct(id) {
                 });
             }
         })
-        console.log('Form submitted');
     })
 
     // Delete Section
@@ -282,11 +278,12 @@ function editProduct(id) {
     let option = "";
     const supplier = {};
     let supplierName = "";
+    let idSupplier = 0;
     $.ajax({
         url: `https://localhost:44317/product/getjsonbyid/${id}`,
         type: 'get'
     }).done((result) => {
-        console.log(result.data);
+        idSupplier = result.data.supplierId;
         let editModalBody =
             `
         <div class="form-row">
@@ -317,16 +314,14 @@ function editProduct(id) {
             </div>
         </div>
         `;
-        let modalTest = $("#modalEdit").html(editModalBody);
-        console.log(modalTest);
+        $("#modalEdit").html(editModalBody);
         $.ajax({
             url: `https://localhost:44317/supplier/getjson`,
             type: 'get'
         }).done((result) => {
-            console.log(result.data);
             option +=
                 `
-            <option value="">Choose Supplier</option>
+            <option value="" disabled>Choose Supplier</option>
             `
             $.each(result.data, (key, val) => {
                 option +=
@@ -335,15 +330,13 @@ function editProduct(id) {
                 `
                 supplier[val.name] = val.id;
             })
-            // console.log(option);
-            let test = $("#supplierId").html(option);
-            console.log(option);
-            console.log(test);
+            $("#supplierId").html(option);
             let options = document.getElementById("supplierId").options;
-
+            
             console.log(options);
+            console.log(supplier);
             for (let i = 0; i < options.length; i++) {
-                if (options[i].value == Object.values(supplier)[i - 1]) {
+                if (options[i].value == Object.values(supplier)[idSupplier - 1]) {
                     options[i].selected = true;
                 }
             }
@@ -366,8 +359,6 @@ function editProduct(id) {
                         for (let i = 0; i < Object.keys(supplier).length; i++) {
                             if (objEdit.supplierId == Object.values(supplier)[i]) supplierName = Object.keys(supplier)[i];
                         }
-                        console.log(supplierName);
-                        console.log(objEdit);
                         swal({
                             title: "Are you sure?",
                             text: `You will edit product id : ${objEdit.id} product name : ${objEdit.name} with supplier ${supplierName}`,
@@ -407,8 +398,6 @@ function editProduct(id) {
                         })
                     }
                     form.classList.add('was-validated');
-
-                    console.log('Form submitted');
                 }, false);
             });
         })

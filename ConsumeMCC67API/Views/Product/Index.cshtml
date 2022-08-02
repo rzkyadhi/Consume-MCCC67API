@@ -3,22 +3,31 @@
     @{
     Layout = "_LayoutDashboard";
     }
-
-    <div class="container">
-        <table class="table table-bordered table-hover" id="tableProduct">
-            <thead class="text-center">
-                <tr>
-                    <th scope="col">Id</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Supplier Name</th>
-                    <th scope="col">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-        <a class="btn btn-primary text-light" onclick=addProduct() data-toggle="modal" data-target="#addProduct">Add
-            Product</a>
+    <div class="container mt-3">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="card-title text-center">Product List</h1>
+                <div class="table-responsive">
+                    <div>
+                        <table class="table align-items-center" id="tableProduct">
+                            <thead class="thead-light text-center">
+                                <tr>
+                                    <th scope="col">Id</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Supplier Name</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary" onclick=addProduct() data-toggle="modal"
+                    data-target="#addProduct">Add
+                    Product</button>
+            </div>
+        </div>
     </div>
 
     <!-- ModalCreate -->
@@ -60,7 +69,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button id="submitBtn" class="btn btn-warning" type="submit">Edit</button>
+                        <button id="editBtn" class="btn btn-warning" type="submit">Edit</button>
                     </div>
                 </form>
             </div>
