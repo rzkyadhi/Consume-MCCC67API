@@ -157,10 +157,10 @@ namespace ConsumeMCC67API.Controllers
                 message = "SUCCESS",
                 data = result
             });
-            return NotFound(new
+            return BadRequest(new
             {
-                status = 404,
-                message = "NOT FOUND"
+                status = 400,
+                message = "Bad Request"
             });
         }
 
@@ -181,5 +181,24 @@ namespace ConsumeMCC67API.Controllers
             });
         }
         #endregion EditJSON
+
+        #region DeleteJSON
+        [HttpDelete]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteJSON(Product product)
+        {
+            var result = productRepository.Delete(product);
+            if (result == System.Net.HttpStatusCode.OK) return Ok(new
+            {
+                status = 200,
+                message = "DELETED"
+            });
+            return BadRequest(new
+            {
+                status = 400,
+                message = "Bad Request"
+            });
+        }
+        #endregion
     }
 }
