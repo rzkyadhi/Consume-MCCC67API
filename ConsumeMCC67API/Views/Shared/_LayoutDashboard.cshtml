@@ -21,7 +21,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
   <meta name="author" content="Creative Tim">
-  <title>Argon Dashboard - Free Dashboard for Bootstrap 4</title>
+  <title>@ViewData["Title"]</title>
   <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css" />
   <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.bootstrap4.min.css" />
   <!-- Favicon -->
@@ -51,16 +51,22 @@
         <div class="collapse navbar-collapse" id="sidenav-collapse-main">
           <!-- Nav items -->
           <ul class="navbar-nav">
+            @if (User.Identity.IsAuthenticated)
+            {
             <li class="nav-item">
-              <a class="nav-link" asp-controller="Dashboard" asp-action="Index">
+              <a class="nav-link @(ViewData["Title"] == "Dashboard" ? "active" : "" )" asp-controller="Dashboard"
+                asp-action="Index">
                 <i class="ni ni-tv-2 text-primary"></i>
                 <span class="nav-link-text">Dashboard</span>
               </a>
             </li>
+            }
+
             @if(User.IsInRole("Manager"))
             {
             <li class="nav-item">
-              <a class="nav-link" asp-controller="Product" asp-action="Index">
+              <a class="nav-link @(ViewData["Title"] == "Product" ? "active" : "" )" asp-controller="Product"
+                asp-action="Index">
                 <i class="ni ni-planet text-orange"></i>
                 <span class="nav-link-text">Product</span>
               </a>
@@ -70,7 +76,8 @@
             @if (User.IsInRole("Staff"))
             {
             <li class="nav-item">
-              <a class="nav-link" asp-controller="Supplier" asp-action="Index">
+              <a class="nav-link @(ViewData["Title"] == "Supplier" ? "active" : "" )" asp-controller="Supplier"
+                asp-action="Index">
                 <i class="ni ni-single-02 text-yellow"></i>
                 <span class="nav-link-text">Supplier</span>
               </a>
