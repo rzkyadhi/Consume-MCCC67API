@@ -1,8 +1,6 @@
 ﻿$.ajax({
     url: "https://localhost:44317/product/GetJSON"
 }).done((result) => {
-    console.log(result);
-    console.log(result.data.length);
     let supplier = [];
     let hashMap = {};
 
@@ -24,7 +22,18 @@
             hashMap[supplier[i]] = 1;
         }
     }
-
+    let totalProduct =
+        `
+    <h5 class="card-title text-uppercase text-muted mb-0">Total Product</h5>
+    <span class="h2 font-weight-bold mb-0">${result.data.length}</span>
+    `;
+    $("#totalProduct").html(totalProduct);
+    let totalSupplier =
+        `
+    <h5 class="card-title text-uppercase text-muted mb-0">Total Supplier</h5>
+    <span class="h2 font-weight-bold mb-0">${Object.keys(hashMap).length}</span>
+    `;
+    $("#totalSupplier").html(totalSupplier);
     let data = {
         labels: Object.keys(hashMap),
         datasets: [{
@@ -79,7 +88,7 @@
         plugins: [plugin],
         options: {
             responsive: true,
-            maintainAspectRatio : false
+            maintainAspectRatio: false
         }
     };
 
