@@ -42,8 +42,8 @@
             backgroundColor: [
                 'rgb(255, 99, 132)',
                 'rgb(54, 162, 235)',
-                '#cc65fe',
-                '#ffce56'
+                'rgb(204,101,254)',
+                'rgb(255,206,86)'
             ],
             hoverOffset: 4,
         }]
@@ -61,8 +61,8 @@
             backgroundColor: [
                 'rgb(255, 99, 132)',
                 'rgb(54, 162, 235)',
-                '#cc65fe',
-                '#ffce56'
+                'rgb(204,101,254)',
+                'rgb(255,206,86)'
             ],
             hoverOffset: 4,
         }]
@@ -99,9 +99,14 @@
         options: {
             responsive: true,
             scales: {
-                y: {
-                    beginAtZero: true
-                }
+                yAxes: [{
+                    display: true,
+                    ticks: {
+                        suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                        // OR //
+                        beginAtZero: true   // minimum value will be 0.
+                    }
+                }]
             }
         },
     }
