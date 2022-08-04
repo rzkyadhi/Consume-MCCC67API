@@ -77,6 +77,8 @@ namespace ConsumeMCC67API
 
             app.UseAuthentication();
 
+            app.UseMiddleware<RedirectMiddleware>();
+
             app.UseAuthorization();
 
             
