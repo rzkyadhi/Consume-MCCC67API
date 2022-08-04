@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace ConsumeMCC67API.Controllers
 {
     /*[Authorize(Roles = "Staff")]*/
-    [Authorize]
+    [Authorize(Roles = "Manager")]
 	public class ProductController : Controller
     {
         private readonly ProductRepository productRepository;
